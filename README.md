@@ -9,10 +9,10 @@ I'll port this repo over to the fork I make, and complete this project over ther
 
 
 ## Short Term Goals
-Get the skeleton working in plain Lua.
-Then get it working in xStream.
-Port this repo to my xStream fork (yet to be made).
-Add the rest of the flesh over there. 
+ - Get the skeleton working in plain Lua.
+ - Then get it working in xStream.
+ - Port this repo to my xStream fork (yet to be made).
+ - Add the rest of the flesh over there. 
 
 
 ## For the Public:
