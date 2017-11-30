@@ -19,7 +19,7 @@ I'll port this repo over to the fork I make, and complete this project over ther
 Wow, I wasn't expecting guests! 
 
 If you have any suggestions, I'm actually really wanting them. Two specific things I need help with: 
- - Making my screwy metatables/modules setup more elegant.
+ - Making my screwy metatables/modules setup more elegant and efficient.
  - Adding iterators for the setters/getters for the `notes` and `delays` properties of the `ins` class.
 
 A summary about what inspired this: 
