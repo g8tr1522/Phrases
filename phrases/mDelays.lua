@@ -1,8 +1,8 @@
 mDelays = {}
-mDelays = {}
+_root = "phrases.mDelays."
 
 
-mDelays["scoot"] = require('delays_methods.scoot')
+mDelays["scoot"] = require(_root..'scoot')
 
 
 

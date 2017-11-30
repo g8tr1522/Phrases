@@ -4,11 +4,12 @@ ins = {}
 --==============================================================================
 -- Metatable/namespace setup
 --==============================================================================
+_root = "phrases."
 
 --create = require('create')
-ins.subtype = require('ins_subtypes')
+ins.subtype = require(_root..'ins_subtypes')
 
-ins.dm = require('delays_methods')
+ins.dm = require(_root..'mDelays')
 ins.dm.__index = ins.dm
 -- ins.nm = require('notes_methods')
 -- ins.nm.__index = ins.nm
