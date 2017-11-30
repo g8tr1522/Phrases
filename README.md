@@ -34,8 +34,8 @@ I'm not a good programmer at all. I think this is a good idea though. This is al
 # General (desired) Organization Scheme
 - Phrases (main module)
     - This is the main file to link together the entire library.
-    - All submodules of this are listed below.
     - Submodules are to be used like `phrases.submodule.foo()`
+    - All submodules of this are listed below.
     
 - ins
     * The main object of this library.
@@ -44,7 +44,7 @@ I'm not a good programmer at all. I think this is a good idea though. This is al
 - m_notes
     * can manipulate a table of `note` values.
     * can also be called as a method of `ins`
-    * yes, I'd like these to be called without the reference of an `ins` object. 
+    * yes, I'd like these to be called without any reference to an `ins` object. 
       Think: `new_note_table = phrases.m_notes.transpose(old_note_table)`
 - m_delays
     * see m_notes
