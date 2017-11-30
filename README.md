@@ -1,21 +1,21 @@
-## Phrases
+# Phrases
 My testing grounds for code I plan to eventually add as a fork in the Renoise tool, xStream.
 
 
-# What will this eventually be?
+## What will this eventually be?
 As of now, once I can get this skeleton built and working, then I will create a fork in xStream 
 (https://github.com/renoise/xrnx/tree/master/Tools/com.renoise.xStream.xrnx). 
 I'll port this repo over to the fork I make, and complete this project over there.
 
 
-# Short Term Goals
+## Short Term Goals
 Get the skeleton working in plain Lua.
 Then get it working in xStream.
 Port this repo to my xStream fork (yet to be made).
 Add the rest of the flesh over there. 
 
 
-# For the Public:
+## For the Public:
 Wow, I wasn't expecting guests! 
 
 If you have any suggestions, I'm actually really wanting them. Two specific things I need help with: 
