@@ -2,6 +2,6 @@
 
 phrases = require('phrases')
 
-obj = phrases.ins.new(phrases.ins, "null")
+obj = phrases.ins.new(phrases.ins, "mp_lead")
 
---obj:print_info()
+obj:print_info()
