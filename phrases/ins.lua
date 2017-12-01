@@ -14,6 +14,8 @@ ins.md.__index = ins.md
 -- ins.mn = require('notes_methods')
 -- ins.mn.__index = ins.mn
 
+utils = require('phrases.utils')
+
 
 
 --==============================================================================
@@ -84,13 +86,13 @@ ins.make_object = function (subtype_string)
 	print("\n=== Don't forget to set number of pattern lines! (object.nopl) \n  = and the upper bound of the delays! (object.delays_UB) \n  = Where object is "..tostring(o).."\n")
 	
 	o.notes     = {}
-	o.notes.NP  = ins_subtype.NnotesP						-- number of notes  phrases
-	o.notes.ph  = rep_table(o.notes.NP , {})  	-- note  phrases
-	o.notes.NV  = rep_table(o.notes.NP , 0 )  	-- number of values in notes  phrase N
+	o.notes.nP  = ins_subtype.NnotesP						-- number of phrases in notes group
+	o.notes.PG  = rep_table(o.notes.nP , {})  	-- note  phrases group
+	o.notes.nV  = rep_table(o.notes.nP , 0 )  	-- number of values in notes  phrase N
 	o.delays    = {}
-	o.delays.NP = ins_subtype.NdelaysP  				-- number of delays phrases
-	o.delays.ph = rep_table(o.delays.NP, {})  	-- delay phrases
-	o.delays.NV = rep_table(o.delays.NP, 0 )  	-- number of values in delays phrase N
+	o.delays.nP = ins_subtype.NdelaysP  				-- number of phrases in delays group
+	o.delays.PG = rep_table(o.delays.nP, {})  	-- delay phrases group
+	o.delays.nV = rep_table(o.delays.nP, 0 )  	-- number of values in delays phrase N
 	
 	return o
 end
@@ -122,13 +124,13 @@ ins.print_info = function (self, options)
 	end; if string.find(options, 'l') then
 		  print("~~~ Object at "..tostring(self).." is a ins.subtype."..self.ins_subtype.." type.")
 	end; if string.find(options, 'n') then
-		  print("  ~ `object.notes.ph [ ]`: "..tostring(self.notes.ph) )
-		   if string.find(options, 'p') then for i = 1,self.notes.NP do
-			print("                     ["..tostring(i).."] --> ", table.unpack(self.notes.ph[i]) ) end end 
+		  print("  ~ `object.notes.PG [ ]`: "..tostring(self.notes.PG) )
+		   if string.find(options, 'p') then for i = 1,self.notes.nP do
+			print("                     ["..tostring(i).."] --> ", table.unpack(self.notes.PG[i]) ) end end 
 	end; if string.find(options, 'd') then
-		  print("  ~ `object.delays.ph[ ]`: "..tostring(self.delays.ph) )
-		   if string.find(options, 'p') then for i = 1,self.notes.NP do
-			print("                     ["..tostring(i).."] --> ", table.unpack(self.delays.ph[i]) ) end end 
+		  print("  ~ `object.delays.PG[ ]`: "..tostring(self.delays.PG) )
+		   if string.find(options, 'p') then for i = 1,self.notes.nP do
+			print("                     ["..tostring(i).."] --> ", table.unpack(self.delays.PG[i]) ) end end 
 	end
 	print()
 end
@@ -144,49 +146,49 @@ end
 
 --------------------------------------------------------------------------------
 -- 
-ins.set_notes = function (self, t, notes_phrase_N)
-	self:set_phrase('n', t, notes_phrase_N)	
+ins.set_notes = function (self, new_phrase, notes_phrase_N)
+	self:set_phrase('n', new_phrase, notes_phrase_N)	
 end
 
 --------------------------------------------------------------------------------
 -- 
-ins.set_delays = function (self, t, delays_phrase_N)
-	self:set_phrase('d', t, delays_phrase_N)
+ins.set_delays = function (self, new_phrase, delays_phrase_N)
+	self:set_phrase('d', new_phrase, delays_phrase_N)
 end
 
 --------------------------------------------------------------------------------
 -- 
-ins.set_phrase = function (self, phrase_type_char, vals, phrase_N)
+ins.set_phrase = function (self, phrase_type_char, new_phrase, phrase_N)
 --[=[ set a single notes/delays phrase.
 ==== Arguments:
- = phrase_type (char):
+ = phrase_type_char (char):
 		- should be either 'n' or 'd'
-		- specifies whether to set obj.notes.ph or obj.delays.ph
-		- immediately gets converted to "notes" or "delays"
-		- a complementary string gets stored in `phrase_type_opposite`
-		- Example: if `phrase_type` = 'n', then 
-				`phrase_type` = "notes"
-				`phrase_type_opposite` = "delays"
- = vals (table of numbers):
-		- a single table (a phrase) of either notes or delays
-		- is NOT a table of phrases of notes or delays
+		- specifies whether to set obj.notes.PG  or obj.delays.PG 
+		- "notes" or "delays" is then assigned to `pts` (Phrase Type String)
+		- a complementary string gets stored in `pto` (Phrase Type Opposite)
+		- Example: if `phrase_type_char` = 'n', then 
+				`pts` = "notes"
+				`pto` = "delays"
+ = new_phrase (table of numbers):
+		- the new phrase that will replace the old phrase at `phrase_N`
+		- is NOT a group of notes or delays, but a phrase of them.
  = phrase_N (number):
-		- specifies which phrase (in `notes.ph`/`delays.ph`) to set. 
+		- specifies which phrase (in `notes.PG `/`delays.PG`) to set. 
 --]=]
 	
 
 -- check input args
 	local pts,pto = ins.get_phrase_strings(phrase_type_char)
 	
-	if self[pts].NP == 1 then
+	if self[pts].nP == 1 then
 		phrase_N = 1
 	else
 		self:is_valid_phrase_index(pts, phrase_N, 1)
 	end	
 	
--- set vals
-	self[pts].ph[phrase_N] =  vals
-	self[pts].NV[phrase_N] = #vals
+-- set new_phrase
+	self[pts].PG[phrase_N] =  new_phrase
+	self[pts].nV[phrase_N] = #new_phrase
 	
 -- make sure number of notes/delays are consistent
 	self:check_amt_of_vals_in_phrase(phrase_type_char, phrase_N)
@@ -217,7 +219,7 @@ end
 ins.get_pl = function (self, delays_phrase_N)
 	local ret_t = self:get_delays(delays_phrase_N)		-- local return table
 	
-	if type(ret_t[1]) == "table" then		-- if we get a table of phrases
+	if type(ret_t[1]) == "table" then		-- if we get a group of phrases
 		for i,v in pairs(ret_t) do
 			ret_t[i] = ins.delays2pl(v)	-- here, `v` (value) is a phrase 
 		end
@@ -232,19 +234,19 @@ end
 -- 
 ins.get_phrase = function (self, phrase_type_char, phrase_N)
 	local pts, pto = ins.get_phrase_strings (phrase_type_char) 
-	--local ret_ToP = false  -- return (all phrases) as a table of phrases
+	--local ret_ToP = false  -- return (all phrases) as a group of phrases
 	
 	if phrase_N == nil then
-		if self[pts].NP == 1 then
+		if self[pts].nP == 1 then
 			phrase_N 	= 1
 			--ret_ToP 	= false
 		else
-			return self[pts].ph
+			return self[pts].PG 
 			--ret_ToP 	= true
 		end
 	end
 	
-	return self[pts].ph[phrase_N]
+	return self[pts].PG [phrase_N]
 end
 
 --------------------------------------------------------------------------------
@@ -263,7 +265,7 @@ end
 -- validation/checker functions
 --
 -- these functions are used in get/set functions to make sure that
---		the 'table of phrases' construct is handled properly.
+--		the 'group' construct is handled properly.
 --==============================================================================
 
 --------------------------------------------------------------------------------
@@ -284,17 +286,17 @@ end
 --------------------------------------------------------------------------------
 -- 
 ins.is_valid_phrase_index = function (self, pts, phrase_N, error_level)
--- check if object only has P phrases, but we try to set phrase.ph[phrase_N], and `phrase_N` > P
+-- check if we try to set phrase.PG[phrase_N], but `phrase_N` > #phrase.PG
 	if error_level then
 		error_level = error_level+1  -- raise outside of this function
 	end
 	
-	if phrase_N > self[pts].NP then
+	if phrase_N > self[pts].nP then
 		if error_level then		
 			error("\n=== ERROR: bad phrase index!!\n"..
-						"  = Tried setting phrase in `object."..pts..".ph["..tostring(phrase_N).."]`!\n"..
+						"  = Tried setting phrase in `object."..pts..".PG["..tostring(phrase_N).."]`!\n"..
 						"  = But object (at "..tostring(self)..") is ins.subtype."..self.ins_subtype.."\n"..
-						"    and only has "..tostring(self[pts].NP).." "..pts.." phrases!", error_level)
+						"    and only has "..tostring(self[pts].nP).." "..pts.." phrases!", error_level)
 		else
 			return false
 		end 		
@@ -311,7 +313,7 @@ ins.check_amt_of_vals_in_phrase = function (self, phrase_type_char, phrase_N)
 ]=]
 	
 	local pts, pto = ins:get_phrase_strings(phrase_type_char)
-	if self[pto].NP == 1 then
+	if self[pto].nP == 1 then
 		pto_phrase_N = 1
 	else
 		pto_phrase_N = phrase_N
@@ -320,14 +322,14 @@ ins.check_amt_of_vals_in_phrase = function (self, phrase_type_char, phrase_N)
 	self:is_valid_phrase_index(pts, phrase_N, 2)
 	local matching = false
 	
-	if self[pts].NV[phrase_N] == self[pto].NV[pto_phrase_N] then
+	if self[pts].nV[phrase_N] == self[pto].nV[pto_phrase_N] then
 		matching = true
 	else 
 		matching = false
 		print("=== Warning!!! Number of notes does not match number of delays!")
 			print(
-			  	"  = `object."..pts..".NV["..phrase_N.."]` = \t"							..tostring(self[pts].NV[phrase_N]).."\n"..
-					"  = `object."..pto..".NV["..tostring(pto_phrase_N).."]` = \t"..tostring(self[pto].NV[pto_phrase_N]) .."\n"
+			  	"  = `object."..pts..".nV["..phrase_N.."]` = \t"							..tostring(self[pts].nV[phrase_N]).."\n"..
+					"  = `object."..pto..".nV["..tostring(pto_phrase_N).."]` = \t"..tostring(self[pto].nV[pto_phrase_N]) .."\n"
 				)
 	end
 	
