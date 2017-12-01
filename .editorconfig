@@ -1,0 +1,12 @@
+# found out how to do this with this link:
+# https://github.com/tiimgreen/github-cheat-sheet#adjust-tab-space
+
+[*]
+end_of_line		= lf
+insert_final_newline = true
+
+
+[*.lua]
+charset			  = utf-8
+indent_style	= tab
+indent_size		= 2
