@@ -83,14 +83,14 @@ ins.make_object = function (subtype_string)
 	o.delays_UB = 0
 	print("\n=== Don't forget to set number of pattern lines! (object.nopl) \n  = and the upper bound of the delays! (object.delays_UB) \n  = Where object is "..tostring(o).."\n")
 	
-	o.notes 		= {}
+	o.notes     = {}
 	o.notes.NP  = ins_subtype.NnotesP						-- number of notes  phrases
 	o.notes.ph  = rep_table(o.notes.NP , {})  	-- note  phrases
-	o.notes.NV 	= rep_table(o.notes.NP , 0 )  	-- number of values in notes  phrase N
-	o.delays		= {}
+	o.notes.NV  = rep_table(o.notes.NP , 0 )  	-- number of values in notes  phrase N
+	o.delays    = {}
 	o.delays.NP = ins_subtype.NdelaysP  				-- number of delays phrases
-	o.delays.ph	= rep_table(o.delays.NP, {})  	-- delay phrases
-	o.delays.NV	= rep_table(o.delays.NP, 0 )  	-- number of values in delays phrase N
+	o.delays.ph = rep_table(o.delays.NP, {})  	-- delay phrases
+	o.delays.NV = rep_table(o.delays.NP, 0 )  	-- number of values in delays phrase N
 	
 	return o
 end
