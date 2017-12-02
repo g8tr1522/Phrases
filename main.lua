@@ -17,10 +17,10 @@ obj:print_info()
 obj:set_delays{1,2.5,3}
 obj:print_info()
 
--- onvals(g, 0,0, function(v) return v/5 end)
+onvals(g, 0,0, function(v) return v/5 end)
 
--- print()
--- for t,i,v in utils.iters.allvals(g) do
-	-- print(string.format("g[%d][%d] = %g", t,i,v))
--- end
+print()
+for t,i,v in utils.iters.allvals(g) do
+	print(string.format("g[%d][%d] = %g", t,i,v))
+end
 

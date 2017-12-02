@@ -15,6 +15,7 @@ ins.md.__index = ins.md
 -- ins.mn.__index = ins.mn
 
 --utility methods
+utils = {}
 utils.delays2pl = require('phrases.utils.delays2pl')
 utils.forvals		= require('phrases.utils.forvals')
 
@@ -241,7 +242,7 @@ end
 -- Uses utils.forvals to return phrases (where phrase_N goes to Psel)
 --
 ins.get_phrase = function (self, phrase_type_char, phrase_N)
-	local pts, ins.get_phrase_strings (phrase_type_char) 
+	local pts = ins.get_phrase_strings (phrase_type_char) 
 	
 	local rt = {}
 	rt = utils.forvals(self["pts"].PG, phrase_N, 0, function (v) return v end)

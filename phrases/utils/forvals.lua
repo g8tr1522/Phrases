@@ -5,6 +5,8 @@
 ----Works similarly to utils.onvals.
 --	Only difference is that instead of modifying the group directly,
 --		we just return a newly created group.
+--  Also, if Psel is number, then we return the phrase table, not a group.
+--		When doing this, Vsel will be ignored.
 --
 ----Be careful! if Psel is not a contiguous sequence, 
 --			then doing things like `table.unpack(rg)` may produce unexpected results!
@@ -17,7 +19,7 @@ idx = require('phrases.tabler.ae1toend')
 
 forvals = function (PG, Psel, Vsel, func)
 	if PG.PG then
-		PG = PG.PG	--this allows passing of object.notes instead of object.notes.PG
+		PG = PG.PG	--this allows user to pass `object.notes` to PG instead of `object.notes.PG`
 	end
 	
 	local rg = {}	--return group					--!
@@ -26,7 +28,10 @@ forvals = function (PG, Psel, Vsel, func)
 		if Psel==0 then 
 			Psel = idx(#PG)
 		else
-			Psel = {Psel}
+			for i,v in ipairs(PG[Psel]) do		--!	
+				rg[i] = v												--!	--Vsel will be ignored.
+			end																--!
+			return rg													--!	--rg is a table, not a group
 		end
 	end
 	
