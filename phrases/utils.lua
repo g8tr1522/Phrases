@@ -3,7 +3,9 @@ _root = "phrases.utils."
 
 
 
-utils["onvals"] 	= require(_root..'onvals')
+utils["delays2pl"] 	= require(_root..'delays2pl')
+utils["forvals"] 		= require(_root..'forvals')
+utils["onvals"] 		= require(_root..'onvals')
 --right now, preloaded package is "phrases.utils"
 
 utils.iters = {}

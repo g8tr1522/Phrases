@@ -33,6 +33,9 @@ onvals = nil
 idx = require('phrases.tabler.ae1toend')
 
 onvals = function (PG, Psel, Vsel, func)
+	if PG.PG then
+		PG = PG.PG	--this allows passing of object.notes instead of object.notes.PG
+	end
 
 	if type(Psel)=="number" then
 		if Psel==0 then 

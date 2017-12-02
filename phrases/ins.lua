@@ -14,7 +14,9 @@ ins.md.__index = ins.md
 -- ins.mn = require('notes_methods')
 -- ins.mn.__index = ins.mn
 
-utils = require('phrases.utils')
+--utility methods
+utils.delays2pl = require('phrases.utils.delays2pl')
+utils.forvals		= require('phrases.utils.forvals')
 
 
 
@@ -215,49 +217,35 @@ ins.get_delays = function (self, delays_phrase_N)
 end
 
 --------------------------------------------------------------------------------
--- 
-ins.get_pl = function (self, delays_phrase_N)
-	local ret_t = self:get_delays(delays_phrase_N)		-- local return table
+-- get_pl
+--
+-- Returns Nth phrase in the delays group as a table of pattern lines.
+-- If phrase_N is 0, then return all delays phrases as a group of tables of pattern lines.
+-- Phrase_N can also be a table of which phrases you want to get back. (not recommended)
+--
+ins.get_pl = function (self, phrase_N)
+	pl = {}
 	
-	if type(ret_t[1]) == "table" then		-- if we get a group of phrases
-		for i,v in pairs(ret_t) do
-			ret_t[i] = ins.delays2pl(v)	-- here, `v` (value) is a phrase 
+	pl = utils.forvals(self.delays.PG, phrase_N, 0, 
+		function (v) --maybe the delays_UB and nopl can be provided as arguments here?
+			return (v-1) /self.delays_UB *self.nopl
 		end
-	else
-		ret_t = ins.delays2pl(ret_t)
-	end
+	)
 	
-	return ret_t
+	return pl
 end
 
 --------------------------------------------------------------------------------
--- 
+-- get_phrase
+--
+-- Uses utils.forvals to return phrases (where phrase_N goes to Psel)
+--
 ins.get_phrase = function (self, phrase_type_char, phrase_N)
-	local pts, pto = ins.get_phrase_strings (phrase_type_char) 
-	--local ret_ToP = false  -- return (all phrases) as a group of phrases
+	local pts, ins.get_phrase_strings (phrase_type_char) 
 	
-	if phrase_N == nil then
-		if self[pts].nP == 1 then
-			phrase_N 	= 1
-			--ret_ToP 	= false
-		else
-			return self[pts].PG 
-			--ret_ToP 	= true
-		end
-	end
-	
-	return self[pts].PG [phrase_N]
-end
-
---------------------------------------------------------------------------------
--- 
-ins.delays2pl = function (t)
--- converts a single delay phrase to pattern lines
-	for i = 1,#t do
-		t[i] = (t[i] - 1) /self.delays_UB *self.nopl
-	end
-	
-	return t
+	local rt = {}
+	rt = utils.forvals(self["pts"].PG, phrase_N, 0, function (v) return v end)
+	return rt
 end
 
 
