@@ -225,6 +225,7 @@ end
 -- Phrase_N can also be a table of which phrases you want to get back. (not recommended)
 --
 ins.get_pl = function (self, phrase_N)
+	phrase_N = phrase_N or 0
 	pl = {}
 	
 	pl = utils.forvals(self.delays.PG, phrase_N, 0, 
@@ -243,6 +244,7 @@ end
 --
 ins.get_phrase = function (self, phrase_type_char, phrase_N)
 	local pts = ins.get_phrase_strings (phrase_type_char) 
+	phrase_N = phrase_N or 0
 	
 	local rt = {}
 	rt = utils.forvals(self["pts"].PG, phrase_N, 0, function (v) return v end)
