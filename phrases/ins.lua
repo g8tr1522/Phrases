@@ -1,16 +1,25 @@
 ins = {}
 
 
+printkeys = function (t)
+	for k,v in pairs(t) do
+		print(string.format("(%s).%s = \n\t\t\t%s", tostring(t), tostring(k), tostring(v) ))
+	end
+end
+
 --==============================================================================
 -- Metatable/namespace setup
 --==============================================================================
-_root = "phrases."
+_fileroot = "phrases."
+_libroot = "phrases.ins."
 
---create = require('create')
-ins.subtype = require(_root..'ins_subtypes')
 
-ins.md = require(_root..'mDelays')
+ins.subtype = require('phrases.ins_subtypes')
+
+
+ins.md = require('phrases.mDelays')
 ins.md.__index = ins.md
+
 -- ins.mn = require('notes_methods')
 -- ins.mn.__index = ins.mn
 
@@ -38,6 +47,9 @@ ins.new = function (self, ins_subtype)
 		setmetatable(o.md, ins.md)
 		-- o.mn = {}
 		-- setmetatable(o.mn, ins.mn)
+		o.get = {}
+		setmetatable(o.get, ins.get)
+		o.get.get_object = o
 		
 	o.__newindex = function (t,k,v)
 		print("=== WARNING! - adding a key to object at "..tostring(t) )
@@ -114,9 +126,10 @@ ins.print_info = function (self, options)
 	if self==ins then
 		print("~~~ Location of class ins is at "..tostring(ins) )
 		if options=='l' then
-			print("  ~ class ins has two 'namespaced' methods categories :")
-			print("     - ins.md at "..tostring(ins.md).." has delays  methods.")
-			print("     - ins.mn at "..tostring(ins.mn).." has notes   methods.\n")
+			print("  ~ class ins has three 'namespaced' methods categories :")
+			print("     - ins.md  at "..tostring(ins.md).. " has delays  methods.")
+			print("     - ins.mn  at "..tostring(ins.mn).. " has notes   methods.")
+			print("     - ins.get at "..tostring(ins.get).." has getter  methods.\n")
 			--print("     - ins.um at "..tostring(ins.um).." has utility methods.")
 		end		
 		return
@@ -151,6 +164,15 @@ ins.get_phrase_strings 					= require("phrases.ins.get_phrase_strings")
 ins.is_valid_phrase_index 			= require("phrases.ins.is_valid_phrase_index")
 ins.check_amt_of_vals_in_phrase = require("phrases.ins.check_amt_of_vals_in_phrase")
 
+
+
+--==============================================================================
+-- phrase getters
+-- 
+--==============================================================================
+
+ins.get = require(_libroot.."_get")
+ins.get.__index = ins.get
 
 
 
@@ -210,87 +232,6 @@ ins.set_phrase = function (self, phrase_type_char, new_phrase, phrase_N)
 -- make sure number of notes/delays are consistent
 	self:check_amt_of_vals_in_phrase(phrase_type_char, phrase_N)
 end
-
-
-
---==============================================================================
--- phrase getters
--- 
--- get_notes and get_delays are 'shell functions' for get_phrase
---==============================================================================
-
---------------------------------------------------------------------------------
--- 
-ins.get_notes = function (self, notes_phrase_N)
-	return self:get_phrase('n', notes_phrase_N)
-end
-
---------------------------------------------------------------------------------
--- 
-ins.get_delays = function (self, delays_phrase_N)
-	return self:get_phrase('d', delays_phrase_N)
-end
-
---------------------------------------------------------------------------------
--- get_pls (get pattern lines)
---
--- Returns Nth phrase in the delays group as a table of pattern lines.
--- If phrase_N is 0, then return all delays phrases as a group of tables of pattern lines.
--- Phrase_N can also be a table of which phrases you want to get back. (not recommended)
---
-ins.get_pls = function (self, phrase_N)
-	phrase_N = phrase_N or 0 
-	pl = {}
-	
-	pl = utils.forvals(self.delays.PG, phrase_N, 0, 
-		function (v) --maybe the delays_UB and nopl can be provided as arguments here?
-			return (v-1) /self.delays_UB *self.nopl
-		end
-	)
-	
-	return pl
-end
-
---------------------------------------------------------------------------------
--- get_phrase
---
--- Uses utils.forvals to return phrases (where phrase_N goes to Psel)
---
-ins.get_phrase = function (self, phrase_type_char, phrase_N)
-	local pts = ins.get_phrase_strings (phrase_type_char) 
-	phrase_N = phrase_N or 0
-	
-	local rt = {}
-	rt = utils.forvals(self[pts].PG, phrase_N, 0, function (v) return v end)
-	return rt
-end
-
-
-
---==============================================================================
--- value getters
--- 
--- get_note and get_delay are 'shell functions' for get_value
--- These functions are used to get the next value in a phrase.
---		Each successive call will return the next value.
---==============================================================================
-
-
-
-
-
-
---==============================================================================
--- validation/checker functions
---
--- these functions are used in get/set functions to make sure that
---		the 'group' construct is handled properly.
---==============================================================================
-
-ins.get_phrase_strings 					= require("phrases.ins.get_phrase_strings")
-ins.is_valid_phrase_index 			= require("phrases.ins.is_valid_phrase_index")
-ins.check_amt_of_vals_in_phrase = require("phrases.ins.check_amt_of_vals_in_phrase")
-
 
 
 
