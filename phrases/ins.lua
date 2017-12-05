@@ -1,15 +1,16 @@
 ins = {}
 
 
-printkeys = function (t)
-	for k,v in pairs(t) do
-		print(string.format("(%s).%s = \n\t\t\t%s", tostring(t), tostring(k), tostring(v) ))
-	end
-end
+-- -- printkeys = function (t)
+	-- -- for k,v in pairs(t) do
+		-- -- print(string.format("(%s).%s = \n\t\t\t%s", tostring(t), tostring(k), tostring(v) ))
+	-- -- end
+-- -- end
 
 --==============================================================================
 -- Metatable/namespace setup
 --==============================================================================
+
 _fileroot = "phrases."
 _libroot = "phrases.ins."
 
@@ -23,7 +24,8 @@ ins.md.__index = ins.md
 -- ins.mn = require('notes_methods')
 -- ins.mn.__index = ins.mn
 
---utility methods
+
+-- utility methods
 utils = {}
 utils.delays2pl = require('phrases.utils.delays2pl')
 utils.forvals		= require('phrases.utils.forvals')
@@ -31,7 +33,7 @@ utils.forvals		= require('phrases.utils.forvals')
 
 
 --==============================================================================
--- object instantiation
+-- object instantiation / OOP stuff
 --
 --==============================================================================
 
@@ -42,11 +44,13 @@ ins.new = function (self, ins_subtype)
 	--o = create.ins_obj(ins_subtype)
 	o = ins.make_object(ins_subtype)
 	
-	-- object metatables	
+	-- object namespace setup
 		o.md = {}
 		setmetatable(o.md, ins.md)
+		o.md.get_object = o
 		-- o.mn = {}
 		-- setmetatable(o.mn, ins.mn)
+		-- o.nm.get_object = o
 		o.get = {}
 		setmetatable(o.get, ins.get)
 		o.get.get_object = o
@@ -66,14 +70,7 @@ ins.new = function (self, ins_subtype)
 end -- new
 
 --------------------------------------------------------------------------------
--- __newindex
--- prevent creating keys in `ins` class
-ins.__newindex = function(t,k,v)
-	error("=== Error : tried to add a key \""..tostring(k).."\" to the 'ins' class.",3)
-end
-
---------------------------------------------------------------------------------
--- make_obj
+-- ins.make_obj
 -- a sub function of `ins:new`
 ins.make_object = function (subtype_string)
 	local ins_subtype = ins.subtype[subtype_string]	--this makes the function more readable, nothing else
@@ -110,6 +107,13 @@ ins.make_object = function (subtype_string)
 	o.delays.nV = rep_table(o.delays.nP, 0 )  	-- number of values in delays phrase N
 	
 	return o
+end
+
+--------------------------------------------------------------------------------
+-- ins.__newindex
+-- prevent creating keys in `ins` class
+ins.__newindex = function(t,k,v)
+	error("=== Error : tried to add a key \""..tostring(k).."\" to the 'ins' class.",3)
 end
 
 
@@ -152,28 +156,22 @@ ins.print_info = function (self, options)
 end
 
 
-
 --==============================================================================
 -- validation/checker functions
 --
--- these functions are used in get/set functions to make sure that
+-- These functions are used in get/set functions to make sure that
 --		the 'group' construct is handled properly.
 --==============================================================================
-
-ins.get_phrase_strings 					= require("phrases.ins.get_phrase_strings")
-ins.is_valid_phrase_index 			= require("phrases.ins.is_valid_phrase_index")
-ins.check_amt_of_vals_in_phrase = require("phrases.ins.check_amt_of_vals_in_phrase")
-
+ins.get_phrase_strings 					= require(_libroot.."get_phrase_strings")
+ins.is_valid_phrase_index 			= require(_libroot.."is_valid_phrase_index")
+ins.check_amt_of_vals_in_phrase = require(_libroot.."check_amt_of_vals_in_phrase")
 
 
 --==============================================================================
--- phrase getters
--- 
+-- getters
 --==============================================================================
-
 ins.get = require(_libroot.."_get")
 ins.get.__index = ins.get
-
 
 
 --==============================================================================
