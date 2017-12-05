@@ -141,6 +141,20 @@ end
 
 
 --==============================================================================
+-- validation/checker functions
+--
+-- these functions are used in get/set functions to make sure that
+--		the 'group' construct is handled properly.
+--==============================================================================
+
+ins.get_phrase_strings 					= require("phrases.ins.get_phrase_strings")
+ins.is_valid_phrase_index 			= require("phrases.ins.is_valid_phrase_index")
+ins.check_amt_of_vals_in_phrase = require("phrases.ins.check_amt_of_vals_in_phrase")
+
+
+
+
+--==============================================================================
 -- setters
 --
 -- set_notes and set_delays are 'shell functions' for set_phrase
@@ -200,7 +214,7 @@ end
 
 
 --==============================================================================
--- getters
+-- phrase getters
 -- 
 -- get_notes and get_delays are 'shell functions' for get_phrase
 --==============================================================================
@@ -218,14 +232,14 @@ ins.get_delays = function (self, delays_phrase_N)
 end
 
 --------------------------------------------------------------------------------
--- get_pl
+-- get_pls (get pattern lines)
 --
 -- Returns Nth phrase in the delays group as a table of pattern lines.
 -- If phrase_N is 0, then return all delays phrases as a group of tables of pattern lines.
 -- Phrase_N can also be a table of which phrases you want to get back. (not recommended)
 --
-ins.get_pl = function (self, phrase_N)
-	phrase_N = phrase_N or 0
+ins.get_pls = function (self, phrase_N)
+	phrase_N = phrase_N or 0 
 	pl = {}
 	
 	pl = utils.forvals(self.delays.PG, phrase_N, 0, 
@@ -247,9 +261,23 @@ ins.get_phrase = function (self, phrase_type_char, phrase_N)
 	phrase_N = phrase_N or 0
 	
 	local rt = {}
-	rt = utils.forvals(self["pts"].PG, phrase_N, 0, function (v) return v end)
+	rt = utils.forvals(self[pts].PG, phrase_N, 0, function (v) return v end)
 	return rt
 end
+
+
+
+--==============================================================================
+-- value getters
+-- 
+-- get_note and get_delay are 'shell functions' for get_value
+-- These functions are used to get the next value in a phrase.
+--		Each successive call will return the next value.
+--==============================================================================
+
+
+
+
 
 
 --==============================================================================
@@ -259,73 +287,9 @@ end
 --		the 'group' construct is handled properly.
 --==============================================================================
 
---------------------------------------------------------------------------------
--- 
-ins.get_phrase_strings = function (phrase_type_char)
--- 'n' returns "notes" and "delays", and 'd' returns "delays" and "notes"
-	if 			phrase_type_char 		 == 'n' then
-					phrase_type_string 		= "notes"
-					phrase_type_opposite 	= "delays"
-	elseif 	phrase_type_char 		 == 'd' then
-					phrase_type_string 		= "delays"
-					phrase_type_opposite 	= "notes"
-	end
-	
-	return phrase_type_string, phrase_type_opposite
-end
-
---------------------------------------------------------------------------------
--- 
-ins.is_valid_phrase_index = function (self, pts, phrase_N, error_level)
--- check if we try to set phrase.PG[phrase_N], but `phrase_N` > #phrase.PG
-	if error_level then
-		error_level = error_level+1  -- raise outside of this function
-	end
-	
-	if phrase_N > self[pts].nP then
-		if error_level then		
-			error("\n=== ERROR: bad phrase index!!\n"..
-						"  = Tried setting phrase in `object."..pts..".PG["..tostring(phrase_N).."]`!\n"..
-						"  = But object (at "..tostring(self)..") is ins.subtype."..self.ins_subtype.."\n"..
-						"    and only has "..tostring(self[pts].nP).." "..pts.." phrases!", error_level)
-		else
-			return false
-		end 		
-	else
-		return true
-	end
-	
-end
-	
---------------------------------------------------------------------------------
--- 
-ins.check_amt_of_vals_in_phrase = function (self, phrase_type_char, phrase_N)
---[=[ prints warnings if the number of values in (notes/delays) phrase_N doesn't match the number of values in (delays/notes) phrase_N
-]=]
-	
-	local pts, pto = ins:get_phrase_strings(phrase_type_char)
-	if self[pto].nP == 1 then
-		pto_phrase_N = 1
-	else
-		pto_phrase_N = phrase_N
-	end
-	
-	self:is_valid_phrase_index(pts, phrase_N, 2)
-	local matching = false
-	
-	if self[pts].nV[phrase_N] == self[pto].nV[pto_phrase_N] then
-		matching = true
-	else 
-		matching = false
-		print("=== Warning!!! Number of notes does not match number of delays!")
-			print(
-			  	"  = `object."..pts..".nV["..phrase_N.."]` = \t"							..tostring(self[pts].nV[phrase_N]).."\n"..
-					"  = `object."..pto..".nV["..tostring(pto_phrase_N).."]` = \t"..tostring(self[pto].nV[pto_phrase_N]) .."\n"
-				)
-	end
-	
-	return matching
-end
+ins.get_phrase_strings 					= require("phrases.ins.get_phrase_strings")
+ins.is_valid_phrase_index 			= require("phrases.ins.is_valid_phrase_index")
+ins.check_amt_of_vals_in_phrase = require("phrases.ins.check_amt_of_vals_in_phrase")
 
 
 
