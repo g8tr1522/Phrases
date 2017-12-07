@@ -16,6 +16,7 @@ _libroot = "phrases.ins."
 
 
 ins.subtype = require('phrases.ins_subtypes')
+ins.value_counter = require(_libroot..'value_counter')
 
 
 ins.md = require('phrases.mDelays')
@@ -30,6 +31,9 @@ utils = {}
 utils.delays2pl = require('phrases.utils.delays2pl')
 utils.forvals		= require('phrases.utils.forvals')
 
+tabler = {}
+tabler.allidx		= require('phrases.tabler.ae1toend')
+
 
 
 --==============================================================================
@@ -39,10 +43,10 @@ utils.forvals		= require('phrases.utils.forvals')
 
 --------------------------------------------------------------------------------
 -- new
-ins.new = function (self, ins_subtype)
+ins.new = function (self, ins_subtype, argt)
 	ins_subtype = ins_subtype or 'null'
 	--o = create.ins_obj(ins_subtype)
-	o = ins.make_object(ins_subtype)
+	o = ins.make_object(ins_subtype, argt)
 	
 	-- object namespace setup
 		o.md = {}
@@ -55,13 +59,7 @@ ins.new = function (self, ins_subtype)
 		setmetatable(o.get, ins.get)
 		o.get.get_object = o
 		
-	o.__newindex = function (t,k,v)
-		print("=== WARNING! - adding a key to object at "..tostring(t) )
-		print("  = Expression looked like : `object."..tostring(k).." = "..tostring(v) )
-		if type(v) == "table" then
-		print("  = "..tostring(v).." is a table with "..tostring(#v).." elements :", table.unpack(v) )
-		end
-	end
+	
 	
 	
 	setmetatable(o, self)
@@ -69,10 +67,11 @@ ins.new = function (self, ins_subtype)
 	return o
 end -- new
 
+
 --------------------------------------------------------------------------------
 -- ins.make_obj
 -- a sub function of `ins:new`
-ins.make_object = function (subtype_string)
+ins.make_object = function (subtype_string, argt)
 	local ins_subtype = ins.subtype[subtype_string]	--this makes the function more readable, nothing else
 	
 	local rep_table = function (N, object)
@@ -93,21 +92,47 @@ ins.make_object = function (subtype_string)
 	o = {}
 	-----print("subtype_string is a "..type(subtype_string).." with value '"..subtype_string.."'.\n" )
 	o.ins_subtype = ins_subtype.myname
-	o.nopl			= 0
-	o.delays_UB = 0
-	print("\n=== Don't forget to set number of pattern lines! (object.nopl) \n  = and the upper bound of the delays! (object.delays_UB) \n  = Where object is "..tostring(o).."\n")
+	
+	if argt and argt.nopl then
+		o.nopl = argt.nopl
+	else 
+		o.nopl = 0
+		print("=== Don't forget to set `object.nopl`!") 
+	end
+	if argt and (argt.delays_UB or argt.dub) then
+		o.delays_UB = argt.delays_UB or argt.dub
+	else 
+		o.delays_UB = 0
+		print("=== Don't forget to set `object.delays_UB`!") 
+	end
+	print()
+	
+	o.vc = require(_libroot..'value_counter')
+	o.count = 1
 	
 	o.notes     = {}
 	o.notes.nP  = ins_subtype.NnotesP						-- number of phrases in notes group
 	o.notes.PG  = rep_table(o.notes.nP , {})  	-- note  phrases group
 	o.notes.nV  = rep_table(o.notes.nP , 0 )  	-- number of values in notes  phrase N
+	--o.notes.vc  = function () end								-- notes value counter
+	
 	o.delays    = {}
 	o.delays.nP = ins_subtype.NdelaysP  				-- number of phrases in delays group
 	o.delays.PG = rep_table(o.delays.nP, {})  	-- delay phrases group
 	o.delays.nV = rep_table(o.delays.nP, 0 )  	-- number of values in delays phrase N
+	--o.delays.vc = function () end								-- notes value counter
+	
+	o.__newindex = function (t,k,v)
+		print("=== WARNING! - adding a key to object at "..tostring(t) )
+		print("  = Expression looked like : `object."..tostring(k).." = "..tostring(v) )
+		if type(v) == "table" then
+		print("  = "..tostring(v).." is a table with "..tostring(#v).." elements :", table.unpack(v) )
+		end
+	end
 	
 	return o
 end
+
 
 --------------------------------------------------------------------------------
 -- ins.__newindex
@@ -173,7 +198,6 @@ ins.check_amt_of_vals_in_phrase = require(_libroot.."check_amt_of_vals_in_phrase
 ins.get = require(_libroot.."_get")
 ins.get.__index = ins.get
 
-
 --==============================================================================
 -- setters
 --
@@ -227,8 +251,10 @@ ins.set_phrase = function (self, phrase_type_char, new_phrase, phrase_N)
 	self[pts].PG[phrase_N] =  new_phrase
 	self[pts].nV[phrase_N] = #new_phrase
 	
--- make sure number of notes/delays are consistent
-	self:check_amt_of_vals_in_phrase(phrase_type_char, phrase_N)
+-- make sure number of vals in all phrases are the same
+	if self:check_amt_of_vals_in_phrase(phrase_type_char, phrase_N) then
+		self:vc(1)
+	end
 end
 
 

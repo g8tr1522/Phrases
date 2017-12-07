@@ -14,11 +14,17 @@
 
 return function (phrase, delays_UB, nopl)
 -- converts a single delay phrase to pattern lines
-	for i = 1,#phrase do
-		phrase[i] = (phrase[i] - 1) /delays_UB *nopl
-	end
 	
-	return phrase
+	if type(phrase)=="number" then
+		return (phrase-1) /delays_UB *nopl
+	
+	elseif type(phrase)=="table" then
+		for i = 1,#phrase do
+			phrase[i] = (phrase[i] - 1) /delays_UB *nopl
+		end
+		
+		return phrase
+	end
 end
 
 
