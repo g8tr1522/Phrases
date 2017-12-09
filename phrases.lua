@@ -16,7 +16,7 @@ phrases = {}
 
 
 
----- 'safer' require style, which relies on main being where the `..` is in the following statement
+---- 'safer' require style, which assumes that main is where the `..` is in the below statement. (ie, in the assignment to package.path)
 ---- This style is appropriate if the Phrases submodule repo lies in the root directory of xStream.
 -------------------------------------------------------------------------------
 package.path = package.path .. ';../Phrases/phrases/?.lua'
