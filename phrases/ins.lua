@@ -7,32 +7,52 @@ ins = {}
 	-- -- end
 -- -- end
 
+--pathdef setup
+
+-- _fileroot = "phrases."
+-- _libroot = "phrases.ins."
+
+-- _repopath    = "Phrases/"										--folder of this repo
+-- _fileroot    =          "phrases/"					--folder this file is contained in
+-- _filelibpath =                   "ins/"			--this file is a module. Its submodules/files are kept in this folder. (ie, the 'ins' folder)
+-- _utilspath   =                   "utils/"		--this file also uses some functions in here.
+-- _tablerpath  =                   "tabler/"	--this file also uses some functions in here.
+
+
+-- _sch_file   = ";".._repopath.._fileroot.._filelibpath.."?.lua"		--searcher for files in 'ins' folder
+-- _sch_utils  = ";".._repopath.._fileroot.._utilspath  .."?.lua"		--searcher for files in 'utils' folders
+-- _sch_tabler = ";".._repopath.._fileroot.._tablerpath .."?.lua"		--searcher for files in 'tabler' folders
+
+-- package.path = package.path --_sch_file .. _sch_utils
+
+_file = "?.lua"
+package.path = package.path 
+						.. ";./phrases/" 				.._file
+            .. ";./phrases/ins/" 		.._file
+						.. ";./phrases/utils/" 	.._file
+						.. ";./phrases/tabler/"	.._file
+
 --==============================================================================
 -- Metatable/namespace setup
 --==============================================================================
 
-_fileroot = "phrases."
-_libroot = "phrases.ins."
+ins.subtype = require('ins_subtypes')
+ins.value_counter = require('value_counter')
 
 
-ins.subtype = require('phrases.ins_subtypes')
-ins.value_counter = require(_libroot..'value_counter')
-
-
-ins.md = require('phrases.mDelays')
+ins.md = require('mDelays')
 ins.md.__index = ins.md
-
 -- ins.mn = require('notes_methods')
 -- ins.mn.__index = ins.mn
 
 
 -- utility methods
 utils = {}
-utils.delays2pl = require('phrases.utils.delays2pl')
-utils.forvals		= require('phrases.utils.forvals')
-
+utils.delays2pl = require('delays2pl')
+utils.forvals		= require('forvals')
+--tabler methods
 tabler = {}
-tabler.allidx		= require('phrases.tabler.ae1toend')
+tabler.allidx		= require('ae1toend')
 
 
 
@@ -107,7 +127,7 @@ ins.make_object = function (subtype_string, argt)
 	end
 	print()
 	
-	o.vc = require(_libroot..'value_counter')
+	o.vc = require('value_counter')
 	o.count = 1
 	
 	o.notes     = {}
@@ -187,15 +207,15 @@ end
 -- These functions are used in get/set functions to make sure that
 --		the 'group' construct is handled properly.
 --==============================================================================
-ins.get_phrase_strings 					= require(_libroot.."get_phrase_strings")
-ins.is_valid_phrase_index 			= require(_libroot.."is_valid_phrase_index")
-ins.check_amt_of_vals_in_phrase = require(_libroot.."check_amt_of_vals_in_phrase")
+ins.get_phrase_strings 					= require("get_phrase_strings")
+ins.is_valid_phrase_index 			= require("is_valid_phrase_index")
+ins.check_amt_of_vals_in_phrase = require("check_amt_of_vals_in_phrase")
 
 
 --==============================================================================
 -- getters
 --==============================================================================
-ins.get = require(_libroot.."_get")
+ins.get = require('_get')
 ins.get.__index = ins.get
 
 --==============================================================================
