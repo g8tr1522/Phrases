@@ -1,4 +1,4 @@
-ins = {}
+Ins = {}
 
 
 -- -- printkeys = function (t)
@@ -9,17 +9,17 @@ ins = {}
 
 --pathdef setup
 
--- _fileroot = "phrases."
--- _libroot = "phrases.ins."
+-- _fileroot = "Phrases."
+-- _libroot = "Phrases.Ins."
 
 -- _repopath    = "Phrases/"										--folder of this repo
--- _fileroot    =          "phrases/"					--folder this file is contained in
--- _filelibpath =                   "ins/"			--this file is a module. Its submodules/files are kept in this folder. (ie, the 'ins' folder)
+-- _fileroot    =          "Phrases/"					--folder this file is contained in
+-- _filelibpath =                   "Ins/"			--this file is a module. Its submodules/files are kept in this folder. (ie, the 'Ins' folder)
 -- _utilspath   =                   "utils/"		--this file also uses some functions in here.
 -- _tablerpath  =                   "tabler/"	--this file also uses some functions in here.
 
 
--- _sch_file   = ";".._repopath.._fileroot.._filelibpath.."?.lua"		--searcher for files in 'ins' folder
+-- _sch_file   = ";".._repopath.._fileroot.._filelibpath.."?.lua"		--searcher for files in 'Ins' folder
 -- _sch_utils  = ";".._repopath.._fileroot.._utilspath  .."?.lua"		--searcher for files in 'utils' folders
 -- _sch_tabler = ";".._repopath.._fileroot.._tablerpath .."?.lua"		--searcher for files in 'tabler' folders
 
@@ -27,23 +27,25 @@ ins = {}
 
 _file = "?.lua"
 package.path = package.path 
-						.. ";./phrases/" 				.._file
-            .. ";./phrases/ins/" 		.._file
-						.. ";./phrases/utils/" 	.._file
-						.. ";./phrases/tabler/"	.._file
+						.. ";./Phrases/" 				.._file
+            .. ";./Phrases/Ins/" 		.._file
+						.. ";./Phrases/utils/" 	.._file
+						.. ";./Phrases/tabler/"	.._file
+						.. ";./Phrases/DelaysMethods/"	.._file
+						.. ";./Phrases/NotesMethods/"	.._file
 
 --==============================================================================
 -- Metatable/namespace setup
 --==============================================================================
 
-ins.subtype = require('ins_subtypes')
-ins.value_counter = require('value_counter')
+Ins.subtype = require('ins_subtypes')
+Ins.value_counter = require('value_counter')
 
 
-ins.md = require('mDelays')
-ins.md.__index = ins.md
--- ins.mn = require('notes_methods')
--- ins.mn.__index = ins.mn
+Ins.dm = require('DelaysMethods')
+Ins.dm.__index = Ins.dm
+-- Ins.nm = require('NotesMethods')
+-- Ins.nm.__index = Ins.nm
 
 
 -- utility methods
@@ -57,30 +59,27 @@ tabler.allidx		= require('ae1toend')
 
 
 --==============================================================================
--- object instantiation / OOP stuff
+-- object Instantiation / OOP stuff
 --
 --==============================================================================
 
 --------------------------------------------------------------------------------
 -- new
-ins.new = function (self, ins_subtype, argt)
+Ins.new = function (self, ins_subtype, argt)
 	ins_subtype = ins_subtype or 'null'
-	--o = create.ins_obj(ins_subtype)
-	o = ins.make_object(ins_subtype, argt)
+	--o = create.Ins_obj(ins_subtype)
+	o = Ins.make_object(ins_subtype, argt)
 	
 	-- object namespace setup
 		o.md = {}
-		setmetatable(o.md, ins.md)
+		setmetatable(o.md, Ins.md)
 		o.md.get_object = o
 		-- o.mn = {}
-		-- setmetatable(o.mn, ins.mn)
+		-- setmetatable(o.mn, Ins.mn)
 		-- o.nm.get_object = o
 		o.get = {}
-		setmetatable(o.get, ins.get)
+		setmetatable(o.get, Ins.get)
 		o.get.get_object = o
-		
-	
-	
 	
 	setmetatable(o, self)
 	self.__index = self
@@ -89,10 +88,10 @@ end -- new
 
 
 --------------------------------------------------------------------------------
--- ins.make_obj
--- a sub function of `ins:new`
-ins.make_object = function (subtype_string, argt)
-	local ins_subtype = ins.subtype[subtype_string]	--this makes the function more readable, nothing else
+-- Ins.make_obj
+-- a sub function of `Ins:new`
+Ins.make_object = function (subtype_string, argt)
+	local ins_subtype = Ins.subtype[subtype_string]	--this makes the function more readable, nothing else
 	
 	local rep_table = function (N, object)
 		rt = {}
@@ -155,10 +154,10 @@ end
 
 
 --------------------------------------------------------------------------------
--- ins.__newindex
--- prevent creating keys in `ins` class
-ins.__newindex = function(t,k,v)
-	error("=== Error : tried to add a key \""..tostring(k).."\" to the 'ins' class.",3)
+-- Ins.__newindex
+-- prevent creating keys in `Ins` class
+Ins.__newindex = function(t,k,v)
+	error("=== Error : tried to add a key \""..tostring(k).."\" to the 'Ins' class.",3)
 end
 
 
@@ -169,17 +168,17 @@ end
 
 --------------------------------------------------------------------------------
 -- 
-ins.print_info = function (self, options)
+Ins.print_info = function (self, options)
 	options = options or 'a'
 	
-	if self==ins then
-		print("~~~ Location of class ins is at "..tostring(ins) )
+	if self==Ins then
+		print("~~~ Location of class Ins is at "..tostring(Ins) )
 		if options=='l' then
-			print("  ~ class ins has three 'namespaced' methods categories :")
-			print("     - ins.md  at "..tostring(ins.md).. " has delays  methods.")
-			print("     - ins.mn  at "..tostring(ins.mn).. " has notes   methods.")
-			print("     - ins.get at "..tostring(ins.get).." has getter  methods.\n")
-			--print("     - ins.um at "..tostring(ins.um).." has utility methods.")
+			print("  ~ class Ins has three 'namespaced' methods categories :")
+			print("     - Ins.md  at "..tostring(Ins.md).. " has delays  methods.")
+			print("     - Ins.mn  at "..tostring(Ins.mn).. " has notes   methods.")
+			print("     - Ins.get at "..tostring(Ins.get).." has getter  methods.\n")
+			--print("     - Ins.um at "..tostring(Ins.um).." has utility methods.")
 		end		
 		return
 	end	--else, print for objects
@@ -187,7 +186,7 @@ ins.print_info = function (self, options)
 	if string.find(options, 'a') then
 			options = 'lndp'
 	end; if string.find(options, 'l') then
-		  print("~~~ Object at "..tostring(self).." is a ins.subtype."..self.ins_subtype.." type.")
+		  print("~~~ Object at "..tostring(self).." is a Ins.subtype."..self.ins_subtype.." type.")
 	end; if string.find(options, 'n') then
 		  print("  ~ `object.notes.PG [ ]`: "..tostring(self.notes.PG) )
 		   if string.find(options, 'p') then for i = 1,self.notes.nP do
@@ -207,16 +206,16 @@ end
 -- These functions are used in get/set functions to make sure that
 --		the 'group' construct is handled properly.
 --==============================================================================
-ins.get_phrase_strings 					= require("get_phrase_strings")
-ins.is_valid_phrase_index 			= require("is_valid_phrase_index")
-ins.check_amt_of_vals_in_phrase = require("check_amt_of_vals_in_phrase")
+Ins.get_phrase_strings 					= require("get_phrase_strings")
+Ins.is_valid_phrase_index 			= require("is_valid_phrase_index")
+Ins.check_amt_of_vals_in_phrase = require("check_amt_of_vals_in_phrase")
 
 
 --==============================================================================
 -- getters
 --==============================================================================
-ins.get = require('_get')
-ins.get.__index = ins.get
+Ins.get = require('_get')
+Ins.get.__index = Ins.get
 
 --==============================================================================
 -- setters
@@ -227,19 +226,19 @@ ins.get.__index = ins.get
 
 --------------------------------------------------------------------------------
 -- 
-ins.set_notes = function (self, new_phrase, notes_phrase_N)
+Ins.set_notes = function (self, new_phrase, notes_phrase_N)
 	self:set_phrase('n', new_phrase, notes_phrase_N)	
 end
 
 --------------------------------------------------------------------------------
 -- 
-ins.set_delays = function (self, new_phrase, delays_phrase_N)
+Ins.set_delays = function (self, new_phrase, delays_phrase_N)
 	self:set_phrase('d', new_phrase, delays_phrase_N)
 end
 
 --------------------------------------------------------------------------------
 -- 
-ins.set_phrase = function (self, phrase_type_char, new_phrase, phrase_N)
+Ins.set_phrase = function (self, phrase_type_char, new_phrase, phrase_N)
 --[=[ set a single notes/delays phrase.
 ==== Arguments:
  = phrase_type_char (char):
@@ -259,7 +258,7 @@ ins.set_phrase = function (self, phrase_type_char, new_phrase, phrase_N)
 	
 
 -- check input args
-	local pts,pto = ins.get_phrase_strings(phrase_type_char)
+	local pts,pto = Ins.get_phrase_strings(phrase_type_char)
 	
 	if self[pts].nP == 1 then
 		phrase_N = 1
@@ -279,4 +278,4 @@ end
 
 
 
-return ins
+return Ins

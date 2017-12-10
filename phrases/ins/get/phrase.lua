@@ -12,7 +12,7 @@
 return function (self, phrase_type_char, phrase_N)
 	self = self.get_object	-- change self from `o.get` to `o`
 	
-	local pts = ins.get_phrase_strings (phrase_type_char) 
+	local pts = Ins.get_phrase_strings (phrase_type_char) 
 	phrase_N = phrase_N or 0
 	
 	local rt = {}

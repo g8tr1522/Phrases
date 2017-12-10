@@ -1,37 +1,37 @@
-phrases = {}
+Phrases = {}
 
 
 ---- Deprecated require style which relies on main being in the level above this file.
 -------------------------------------------------------------------------------
--- __mainroot = 'phrases.' --this is the location of the main file that requires this file
+-- __mainroot = 'Phrases.' --this is the location of the main file that requires this file
 
--- phrases.ins 		= require(__mainroot..'ins')
--- phrases.mDelays = require(__mainroot..'mDelays')
--- --phrases.mNotes = require('phrases.mNotes')
+-- Phrases.Ins 		= require(__mainroot..'Ins')
+-- Phrases.mDelays = require(__mainroot..'mDelays')
+-- --Phrases.mNotes = require('Phrases.mNotes')
 
--- phrases.utils 	= require(__mainroot..'utils')
--- --phrases.utils.iters = require('phrases.utils.iters')
+-- Phrases.utils 	= require(__mainroot..'utils')
+-- --Phrases.utils.iters = require('Phrases.utils.iters')
 
--- phrases.tabler 	= require(__mainroot..'tabler')
+-- Phrases.tabler 	= require(__mainroot..'tabler')
 
 
 
 ---- 'safer' require style, which assumes that main is where the `..` is in the below statement. (ie, in the assignment to package.path)
 ---- This style is appropriate if the Phrases submodule repo lies in the root directory of xStream.
 -------------------------------------------------------------------------------
-package.path = package.path .. ';./phrases/?.lua'
+package.path = package.path .. ';./Phrases/?.lua'
 
-phrases.ins 		= require('ins')
-phrases.mDelays = require('mDelays')
---phrases.mNotes = require('phrases.mNotes')
+Phrases.Ins 		= require('Ins')
+Phrases.mDelays = require('DelaysMethods')
+--Phrases.mNotes = require('NotesMethods')
 
-phrases.utils 	= require('utils')
---phrases.utils.iters = require('phrases.utils.iters')
+Phrases.utils 	= require('utils')
+--Phrases.utils.iters = require('Phrases.utils.iters')
 
-phrases.tabler 	= require('tabler')
-
-
+Phrases.tabler 	= require('tabler')
 
 
 
-return phrases
+
+
+return Phrases

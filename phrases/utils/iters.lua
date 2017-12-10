@@ -1,5 +1,5 @@
 iters = {}
-_root = "phrases.utils.iters."
+_root = "Phrases.utils.iters."
 
 
 iters["allvals"] 	= require(_root..'allvals')

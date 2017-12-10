@@ -1,5 +1,5 @@
 tabler = {}
-_root = 'phrases.tabler.'
+_root = 'Phrases.tabler.'
 
 
 tabler["ae1toend"] 	=  require(_root..'ae1toend')

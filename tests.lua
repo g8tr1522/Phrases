@@ -1,6 +1,6 @@
 -- This is just used to test out new code. This file isn't required.
 print()
-phrases = require('phrases')
+Phrases = require('Phrases')
 
 g = {
 	{10,20,30},
@@ -8,7 +8,7 @@ g = {
   {5,15,25,35,45},
 }
 
-obj = phrases.ins.new(phrases.ins, "mp_lead", {dub=4, nopl=64})
+obj = Phrases.Ins:new("mp_lead", {dub=4, nopl=64})
 obj:print_info()
 obj:set_notes{10,20,30,40}
 obj:set_delays{1,2.5,3,3.5}

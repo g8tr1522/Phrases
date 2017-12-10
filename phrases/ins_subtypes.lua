@@ -2,7 +2,7 @@ ins_subtypes = {}
 
 --------------------------------------------------------------------------------
 -- instrument subtypes
-_ISpath = 'phrases.ins_subtypes.'
+_ISpath = 'Phrases.ins_subtypes.'
 
 ins_subtypes["test"] 						= require(_ISpath..'test')
 ins_subtypes["null"]						= require(_ISpath..'null')

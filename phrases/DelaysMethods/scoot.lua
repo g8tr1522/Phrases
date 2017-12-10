@@ -1,4 +1,4 @@
---delay_methods.scoot
+--DelaysMethods.scoot
 --Shift (or scoot) the delay of note_N by at least (the third arg)
 
 --[=[ mini documentation

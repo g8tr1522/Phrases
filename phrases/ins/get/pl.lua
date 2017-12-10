@@ -6,7 +6,7 @@
 --
 --
 
-delays2pl = require("phrases.utils.delays2pl")
+delays2pl = require("Phrases.utils.delays2pl")
 
 pl = function (self, phrase_N)
 	self = self.get_object	-- change self from `o.get` to `o`
