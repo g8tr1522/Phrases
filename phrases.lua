@@ -22,8 +22,8 @@ Phrases = {}
 package.path = package.path .. ';./Phrases/?.lua'
 
 Phrases.Ins 		= require('Ins')
-Phrases.mDelays = require('DelaysMethods')
---Phrases.mNotes = require('NotesMethods')
+Phrases.DelaysMethods = require('DelaysMethods')
+--Phrases.NotesMethods = require('NotesMethods')
 
 Phrases.utils 	= require('utils')
 --Phrases.utils.iters = require('Phrases.utils.iters')
