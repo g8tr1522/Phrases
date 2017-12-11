@@ -8,9 +8,12 @@ g = {
   {5,15,25,35,45},
 }
 
-obj = Phrases.Ins:new{subtype="mp_lead", dub=4, nopl=64}
+obj = Phrases.Ins:new{subtype="mp_lead", dub=4, nopl=64, nonp=3}
 obj:print_info()
+
 obj:set_notes{10,20,30,40}
+obj:set_notes({10,20,30,40},2)
+obj:set_notes({10,20,30,40},3)
 obj:set_delays{1,2.5,3,3.5}
 obj:print_info()
 

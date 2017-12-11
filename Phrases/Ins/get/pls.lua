@@ -13,17 +13,16 @@
 --
 --
 
+delays2pl = require("Phrases.utils.delays2pl")
+
 return function (self, phrase_N)
 	self = self.get_object	-- change self from `o.get` to `o`
 	
-	phrase_N = phrase_N or 0 
-	pl = {}
+	pls = {}
 	
-	pl = utils.forvals(self.delays.PG, phrase_N, 0, 
-		function (v) --maybe the delays_UB and nopl can be provided as arguments here?
-			return (v-1) /self.delays_UB *self.nopl
-		end
-	)
+	for i,v in ipairs(self.delays) do
+		pls[i] = delays2pl(v, self.delays_UB, self.nopl)
+	end
 	
-	return pl
+	return pls
 end

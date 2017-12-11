@@ -10,13 +10,12 @@ delays2pl = require("Phrases.utils.delays2pl")
 
 pl = function (self, phrase_N)
 	self = self.get_object	-- change self from `o.get` to `o`
-	phrase_N = phrase_N or 1
 	
 	local i = self.count
-	local n = self.delays.PG[phrase_N][i]
-	n = delays2pl(n, self.delays_UB, self.nopl)
+	local d = self.delays[i]
+	d = delays2pl(d, self.delays_UB, self.nopl)
 	
-	return n
+	return d
 end
 
 

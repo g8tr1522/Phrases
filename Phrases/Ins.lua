@@ -72,7 +72,10 @@ tabler.allidx		= require('ae1toend')
 --------------------------------------------------------------------------------
 -- new
 Ins.new = function (self, argt)
-	self = self or Ins
+	if not argt then	-- in case user forgets to use colon syntax
+		local argt = self
+		local self = Ins
+	end		
 	
 	local o = Ins.make_object(argt)
 	
@@ -100,10 +103,14 @@ Ins.make_object = function (argt)
 	local o = {}
 	
 --handle input argument table
-	if type(argt)=="table" then
-		argt = argt or {subtype = "null"}
-	else
+	if type(argt)~="table" then
 		error("\n=== Wrong argument to Ins:new(argt) !\n  = Expected type(argt) to be a table, but argt is type "..type(argt).."!", 3)
+	end
+	
+	if (argt.nonp or argt.nnp or argt.np or argt.nn) then	--number of notes phrases
+		argt.nonp = (argt.nonp or argt.nnp or argt.np or argt.nn)
+	else
+		argt.nonp = 1
 	end
 	
 	if argt.nopl then
@@ -142,22 +149,17 @@ Ins.make_object = function (argt)
 	o.count = 1
 	
 --now, construct the members for the notes and phrases groups
-	ins_subtype = Ins.subtype[argt.subtype]	--this makes the function more readable, nothing else
-	o.ins_subtype = ins_subtype.myname
-	
 	o.notes     = {}
-	o.notes.nP  = ins_subtype.NnotesP						-- number of phrases in notes group
-	o.notes.PG  = rep_table(o.notes.nP , {})  	-- note  phrases group
+	o.notes.nP  = argt.nonp													-- number of phrases in notes group
+	o.notes.PG  = rep_table(o.notes.nP , {})  	-- note  phrases
 	o.notes.nV  = rep_table(o.notes.nP , 0 )  	-- number of values in notes  phrase N
 	--o.notes.vc  = function () end								-- notes value counter
 	
 	o.delays    = {}
-	o.delays.nP = ins_subtype.NdelaysP  				-- number of phrases in delays group
-	o.delays.PG = rep_table(o.delays.nP, {})  	-- delay phrases group
-	o.delays.nV = rep_table(o.delays.nP, 0 )  	-- number of values in delays phrase N
+	--future: delays will have tt AND pl members which will be set at every call to Ins:set_delays()
 	--o.delays.vc = function () end								-- notes value counter
 	
---this discourages users from creating new keys in Ins objects
+--this discourages users from creating new keys in Ins objects (aka, shitty encapsulation)
 	o.__newindex = function (t,k,v)
 		print("\n=== WARNING! - adding a key to object at "..tostring(t) )
 		print("  = Expression looked like : `object."..tostring(k).." = "..tostring(v) )
@@ -203,16 +205,15 @@ Ins.print_info = function (self, options)
 	if string.find(options, 'a') then
 			options = 'lndp'
 	end; if string.find(options, 'l') then
-		  print("~~~ Object at "..tostring(self).." is a Ins.subtype."..self.ins_subtype.." type.")
+		  print("~~~ Object at "..tostring(self).." is an Ins object with "..tostring(self.notes.nP).." notes phrases.")
+	end; if string.find(options, 'd') then
+		  print("  ~ `object.delays` : ", unpack(self.delays))
 	end; if string.find(options, 'n') then
 		  print("  ~ `object.notes.PG [ ]`: "..tostring(self.notes.PG) )
 		   if string.find(options, 'p') then for i = 1,self.notes.nP do
 			print("                     ["..tostring(i).."] --> ", unpack(self.notes.PG[i]) ) end end 
-	end; if string.find(options, 'd') then
-		  print("  ~ `object.delays.PG[ ]`: "..tostring(self.delays.PG) )
-		   if string.find(options, 'p') then for i = 1,self.notes.nP do
-			print("                     ["..tostring(i).."] --> ", unpack(self.delays.PG[i]) ) end end 
-	end
+	end;
+	
 	print()
 end
 
@@ -223,9 +224,9 @@ end
 -- These functions are used in get/set functions to make sure that
 --		the 'group' construct is handled properly.
 --==============================================================================
-Ins.get_phrase_strings 					= require("get_phrase_strings")
-Ins.is_valid_phrase_index 			= require("is_valid_phrase_index")
-Ins.check_amt_of_vals_in_phrase = require("check_amt_of_vals_in_phrase")
+Ins.get_phrase_strings 						= require("get_phrase_strings")
+Ins.is_valid_phrase_index 				= require("is_valid_phrase_index")
+Ins.check_amt_of_vals_in_phrases	= require("check_amt_of_vals_in_phrases")
 
 
 --==============================================================================
@@ -249,8 +250,10 @@ end
 
 --------------------------------------------------------------------------------
 -- 
-Ins.set_delays = function (self, new_phrase, delays_phrase_N)
-	self:set_phrase('d', new_phrase, delays_phrase_N)
+Ins.set_delays = function (self, new_phrase)
+	self.delays = new_phrase
+	self:check_amt_of_vals_in_phrases()
+	--future: set delays.tt and delays.pl
 end
 
 --------------------------------------------------------------------------------
@@ -276,19 +279,15 @@ Ins.set_phrase = function (self, phrase_type_char, new_phrase, phrase_N)
 
 -- check input args
 	local pts,pto = Ins.get_phrase_strings(phrase_type_char)
-	
-	if self[pts].nP == 1 then
-		phrase_N = 1
-	else
-		self:is_valid_phrase_index(pts, phrase_N, 1)
-	end	
+	phrase_N = phrase_N or 1
+	self:is_valid_phrase_index(pts, phrase_N, 1)
 	
 -- set new_phrase
 	self[pts].PG[phrase_N] =  new_phrase
 	self[pts].nV[phrase_N] = #new_phrase
 	
 -- make sure number of vals in all phrases are the same
-	if self:check_amt_of_vals_in_phrase(phrase_type_char, phrase_N) then
+	if self:check_amt_of_vals_in_phrases(phrase_N) then
 		self:vc(1)
 	end
 end
