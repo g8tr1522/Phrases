@@ -6,7 +6,7 @@
 --
 
 get = {}
-_root = "phrases.ins.get."
+_root = "Phrases.Ins.get."
 
 
 get.notes 	= require (_root.."notes")
