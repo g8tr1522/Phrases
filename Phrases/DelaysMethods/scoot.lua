@@ -44,7 +44,10 @@
 		
 --]=]---[=[--
 
-return function (self, note_N, ... )
+unpack = unpack or table.unpack -- Renoise API uses unpack, not table.unpack
+
+
+scoot = function (self, note_N, ... )
 	self = getmetatable(self) --turn self into `obj` rather than `obj.m_delays`
 	
 --handle arguments
@@ -81,8 +84,8 @@ return function (self, note_N, ... )
 		note_N = rndm_Ns
 	elseif type(note_N) == "table" then
 		--here, just warn the user if he provides an index outside the range of dels_tt
-		local maxidx = math.max(table.unpack(note_N))
-		local minidx = math.min(table.unpack(note_N))
+		local maxidx = math.max(unpack(note_N))
+		local minidx = math.min(unpack(note_N))
 		if (maxidx > self.N) or (minidx < 1) then
 			error("Error in scoot_delay : argument note_N : table must be indices for dels_tt. ie, indices are out of range",2)
 		end
@@ -132,3 +135,5 @@ return function (self, note_N, ... )
 	
 	
 end
+
+return scoot

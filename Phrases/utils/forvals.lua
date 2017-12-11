@@ -9,7 +9,7 @@
 --		When doing this, Vsel will be ignored.
 --
 ----Be careful! if Psel is not a contiguous sequence, 
---			then doing things like `table.unpack(rg)` may produce unexpected results!
+--			then doing things like `unpack(rg)` may produce unexpected results!
 --
 ----For Author: lines that are different from onvals are marked with "--!"
 --

@@ -34,6 +34,9 @@ package.path = package.path
 						.. ";./Phrases/DelaysMethods/"	.._file
 						.. ";./Phrases/NotesMethods/"	.._file
 
+						
+unpack = unpack or table.unpack -- Renoise API uses unpack, not table.unpack
+
 --==============================================================================
 -- Metatable/namespace setup
 --==============================================================================
@@ -145,7 +148,7 @@ Ins.make_object = function (subtype_string, argt)
 		print("=== WARNING! - adding a key to object at "..tostring(t) )
 		print("  = Expression looked like : `object."..tostring(k).." = "..tostring(v) )
 		if type(v) == "table" then
-		print("  = "..tostring(v).." is a table with "..tostring(#v).." elements :", table.unpack(v) )
+		print("  = "..tostring(v).." is a table with "..tostring(#v).." elements :", unpack(v) )
 		end
 	end
 	
@@ -190,11 +193,11 @@ Ins.print_info = function (self, options)
 	end; if string.find(options, 'n') then
 		  print("  ~ `object.notes.PG [ ]`: "..tostring(self.notes.PG) )
 		   if string.find(options, 'p') then for i = 1,self.notes.nP do
-			print("                     ["..tostring(i).."] --> ", table.unpack(self.notes.PG[i]) ) end end 
+			print("                     ["..tostring(i).."] --> ", unpack(self.notes.PG[i]) ) end end 
 	end; if string.find(options, 'd') then
 		  print("  ~ `object.delays.PG[ ]`: "..tostring(self.delays.PG) )
 		   if string.find(options, 'p') then for i = 1,self.notes.nP do
-			print("                     ["..tostring(i).."] --> ", table.unpack(self.delays.PG[i]) ) end end 
+			print("                     ["..tostring(i).."] --> ", unpack(self.delays.PG[i]) ) end end 
 	end
 	print()
 end
