@@ -68,7 +68,7 @@ tabler.allidx		= require('ae1toend')
 Ins.new = function (self, ins_subtype, argt)
 	ins_subtype = ins_subtype or 'null'
 	--o = create.Ins_obj(ins_subtype)
-	o = Ins.make_object(ins_subtype, argt)
+	local o = Ins.make_object(ins_subtype, argt)
 	
 	-- object namespace setup
 		o.md = {}
@@ -94,7 +94,7 @@ Ins.make_object = function (subtype_string, argt)
 	local ins_subtype = Ins.subtype[subtype_string]	--this makes the function more readable, nothing else
 	
 	local rep_table = function (N, object)
-		rt = {}
+		local rt = {}
 		-----print("N is "..tostring(N))
 		if N == 0 then
 			rt[1] = 0
@@ -108,7 +108,7 @@ Ins.make_object = function (subtype_string, argt)
 	end
 	
 	
-	o = {}
+	local o = {}
 	-----print("subtype_string is a "..type(subtype_string).." with value '"..subtype_string.."'.\n" )
 	o.ins_subtype = ins_subtype.myname
 	

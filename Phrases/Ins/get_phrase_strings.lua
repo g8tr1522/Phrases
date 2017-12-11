@@ -18,7 +18,8 @@
 
 
 return function (phrase_type_char)
--- 'n' returns "notes" and "delays", and 'd' returns "delays" and "notes"
+	local phrase_type_string, phrase_type_opposite = "",""
+	
 	if 			phrase_type_char 		 == 'n' then
 					phrase_type_string 		= "notes"
 					phrase_type_opposite 	= "delays"

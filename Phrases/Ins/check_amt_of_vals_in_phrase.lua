@@ -25,7 +25,7 @@ return function (self, phrase_type_char, phrase_N)
 		phrase_type_char = 'n'
 	end
 	
-	local pts, pto = Ins:get_phrase_strings(phrase_type_char)
+	local pts, pto = Ins.get_phrase_strings(phrase_type_char)
 	-- if self[pto].nP == 1 then
 		-- pto_phrase_N = 1
 	-- else
