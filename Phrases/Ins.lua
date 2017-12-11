@@ -1,11 +1,14 @@
 Ins = {}
 
 
--- -- printkeys = function (t)
-	-- -- for k,v in pairs(t) do
-		-- -- print(string.format("(%s).%s = \n\t\t\t%s", tostring(t), tostring(k), tostring(v) ))
-	-- -- end
--- -- end
+-- printkeys = function (t, name)	--this is used only for debugging
+	-- name = name or '('..tostring(t)..')'
+	-- print("\nPrinting keys for table '"..tostring(name).."'...")
+	-- for k,v in pairs(t) do
+		-- print(string.format("%s.%s = \n\t\t\t%s", tostring(name), tostring(k), tostring(v) ))
+	-- end
+	-- print()
+-- end
 
 --pathdef setup
 
@@ -68,10 +71,10 @@ tabler.allidx		= require('ae1toend')
 
 --------------------------------------------------------------------------------
 -- new
-Ins.new = function (self, ins_subtype, argt)
-	ins_subtype = ins_subtype or 'null'
-	--o = create.Ins_obj(ins_subtype)
-	local o = Ins.make_object(ins_subtype, argt)
+Ins.new = function (self, argt)
+	self = self or Ins
+	
+	local o = Ins.make_object(argt)
 	
 	-- object namespace setup
 		o.md = {}
@@ -93,9 +96,33 @@ end -- new
 --------------------------------------------------------------------------------
 -- Ins.make_obj
 -- a sub function of `Ins:new`
-Ins.make_object = function (subtype_string, argt)
-	local ins_subtype = Ins.subtype[subtype_string]	--this makes the function more readable, nothing else
+Ins.make_object = function (argt)
+	local o = {}
 	
+--handle input argument table
+	if type(argt)=="table" then
+		argt = argt or {subtype = "null"}
+	else
+		error("\n=== Wrong argument to Ins:new(argt) !\n  = Expected type(argt) to be a table, but argt is type "..type(argt).."!", 3)
+	end
+	
+	if argt.nopl then
+		o.nopl = argt.nopl
+	else 
+		o.nopl = 0
+		print("=== Don't forget to set `object.nopl`!") 
+	end
+	
+	if (argt.delays_UB or argt.dub) then
+		o.delays_UB = argt.delays_UB or argt.dub
+	else 
+		o.delays_UB = 0
+		print("=== Don't forget to set `object.delays_UB`!") 
+	end
+	
+	print()
+	
+--rep_table function helps with creating group members
 	local rep_table = function (N, object)
 		local rt = {}
 		-----print("N is "..tostring(N))
@@ -110,27 +137,13 @@ Ins.make_object = function (subtype_string, argt)
 		return rt
 	end
 	
-	
-	local o = {}
-	-----print("subtype_string is a "..type(subtype_string).." with value '"..subtype_string.."'.\n" )
-	o.ins_subtype = ins_subtype.myname
-	
-	if argt and argt.nopl then
-		o.nopl = argt.nopl
-	else 
-		o.nopl = 0
-		print("=== Don't forget to set `object.nopl`!") 
-	end
-	if argt and (argt.delays_UB or argt.dub) then
-		o.delays_UB = argt.delays_UB or argt.dub
-	else 
-		o.delays_UB = 0
-		print("=== Don't forget to set `object.delays_UB`!") 
-	end
-	print()
-	
+--value counter
 	o.vc = require('value_counter')
 	o.count = 1
+	
+--now, construct the members for the notes and phrases groups
+	ins_subtype = Ins.subtype[argt.subtype]	--this makes the function more readable, nothing else
+	o.ins_subtype = ins_subtype.myname
 	
 	o.notes     = {}
 	o.notes.nP  = ins_subtype.NnotesP						-- number of phrases in notes group
@@ -144,8 +157,9 @@ Ins.make_object = function (subtype_string, argt)
 	o.delays.nV = rep_table(o.delays.nP, 0 )  	-- number of values in delays phrase N
 	--o.delays.vc = function () end								-- notes value counter
 	
+--this discourages users from creating new keys in Ins objects
 	o.__newindex = function (t,k,v)
-		print("=== WARNING! - adding a key to object at "..tostring(t) )
+		print("\n=== WARNING! - adding a key to object at "..tostring(t) )
 		print("  = Expression looked like : `object."..tostring(k).." = "..tostring(v) )
 		if type(v) == "table" then
 		print("  = "..tostring(v).." is a table with "..tostring(#v).." elements :", unpack(v) )
