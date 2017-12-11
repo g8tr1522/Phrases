@@ -1,13 +1,15 @@
 
 --------------------------------------------------------------------------------
--- ins.get.notes
+-- ins.get:notes(Psel)
 --
-----Shell function for ins.get.phrase
+----Uses utils.forvals to return selected notes phrases
 --
 --
 
 
-return function (self, notes_phrase_N)
+return function (self, Psel)
 	self = self.get_object	-- change self from `o.get` to `o`
-	return self.get:phrase('n', notes_phrase_N)
+	
+	Psel = Psel or 0
+	return utils.forvals(self.notes.PG, Psel, 0, function (v) return v end)
 end

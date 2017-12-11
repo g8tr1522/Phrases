@@ -104,7 +104,9 @@ Ins.make_object = function (argt)
 	
 --handle input argument table
 	if type(argt)~="table" then
-		error("\n=== Wrong argument to Ins:new(argt) !\n  = Expected type(argt) to be a table, but argt is type "..type(argt).."!", 3)
+		error("\n=== Wrong argument to Ins:new(argt) !"
+			    .."  = Expected type(argt) to be a table, but argt is type "..type(argt).."!"
+					,3)
 	end
 	
 	if (argt.nonp or argt.nnp or argt.np or argt.nn) then	--number of notes phrases
@@ -244,8 +246,18 @@ Ins.get.__index = Ins.get
 
 --------------------------------------------------------------------------------
 -- 
-Ins.set_notes = function (self, new_phrase, notes_phrase_N)
-	self:set_phrase('n', new_phrase, notes_phrase_N)	
+Ins.set_notes = function (self, new_phrase, phrase_N)
+	phrase_N = phrase_N or 1
+	self:is_valid_phrase_index(phrase_N, 1)
+	
+-- set new_phrase
+	self.notes.PG[phrase_N] =  new_phrase
+	self.notes.nV[phrase_N] = #new_phrase
+	
+-- make sure number of vals in all phrases are the same
+	if self:check_amt_of_vals_in_phrases(phrase_N) then
+		self:vc(1)
+	end	
 end
 
 --------------------------------------------------------------------------------

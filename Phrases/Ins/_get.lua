@@ -12,7 +12,7 @@ _root = "Phrases.Ins.get."
 get.notes 	= require (_root.."notes")
 get.delays 	= require (_root.."delays")
 get.pls 		= require (_root.."pls")
-get.phrase 	= require (_root.."phrase")
+--get.phrase 	= require (_root.."phrase")
 
 get.note  	= require (_root.."note")
 get.delay 	= require (_root.."delay")

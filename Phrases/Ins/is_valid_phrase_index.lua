@@ -17,18 +17,18 @@
 --
 
 
-return function (self, pts, phrase_N, error_level)
+return function (self, phrase_N, error_level)
 -- check if we try to set phrase.PG[phrase_N], but `phrase_N` > #phrase.PG
 	if error_level then
 		error_level = error_level+1  -- raise outside of this function
 	end
 	
-	if phrase_N > self[pts].nP then
+	if phrase_N > self.notes.nP then
 		if error_level then		
-			error("\n=== ERROR: bad phrase index!!\n"..
-						"  = Tried setting phrase in `object."..pts..".PG["..tostring(phrase_N).."]`!\n"..
-						"  = But object (at "..tostring(self)..") is ins.subtype."..self.ins_subtype.."\n"..
-						"    and only has "..tostring(self[pts].nP).." "..pts.." phrases!", error_level)
+			error("\n=== ERROR: bad phrase index!!\n"
+						.."  = Tried setting `object.notes["..tostring(phrase_N).."]`,"
+						.."  = But object only has "..tostring(#self.notes.PG).." note phrases!"
+						, error_level)
 		else
 			return false
 		end 		
