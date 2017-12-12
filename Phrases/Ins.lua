@@ -151,15 +151,9 @@ Ins.make_object = function (argt)
 	o.count = 1
 	
 --now, construct the members for the notes and phrases groups
-	o.notes     = {}
-	o.notes.nP  = argt.nonp													-- number of phrases in notes group
-	o.notes.PG  = rep_table(o.notes.nP , {})  	-- note  phrases
-	o.notes.nV  = rep_table(o.notes.nP , 0 )  	-- number of values in notes  phrase N
-	--o.notes.vc  = function () end								-- notes value counter
-	
+	o.notes     = rep_table(argt.nonp, {})	-- a table of phrases (ie, note tables)
 	o.delays    = {}
 	--future: delays will have tt AND pl members which will be set at every call to Ins:set_delays()
-	--o.delays.vc = function () end								-- notes value counter
 	
 --this discourages users from creating new keys in Ins objects (aka, shitty encapsulation)
 	o.__newindex = function (t,k,v)
@@ -207,13 +201,13 @@ Ins.print_info = function (self, options)
 	if string.find(options, 'a') then
 			options = 'lndp'
 	end; if string.find(options, 'l') then
-		  print("~~~ Object at "..tostring(self).." is an Ins object with "..tostring(self.notes.nP).." notes phrases.")
+		  print("~~~ Object at "..tostring(self).." is an Ins object with "..tostring(#self.notes).." notes phrases.")
 	end; if string.find(options, 'd') then
 		  print("  ~ `object.delays` : ", unpack(self.delays))
 	end; if string.find(options, 'n') then
-		  print("  ~ `object.notes.PG [ ]`: "..tostring(self.notes.PG) )
-		   if string.find(options, 'p') then for i = 1,self.notes.nP do
-			print("                     ["..tostring(i).."] --> ", unpack(self.notes.PG[i]) ) end end 
+		  print("  ~ `object.notes[ ]`: "..tostring(self.notes) )
+		   if string.find(options, 'p') then for i = 1,#self.notes do
+			print("                 ["..tostring(i).."] --> ", unpack(self.notes[i]) ) end end 
 	end;
 	
 	print()
@@ -251,8 +245,7 @@ Ins.set_notes = function (self, new_phrase, phrase_N)
 	self:is_valid_phrase_index(phrase_N, 1)
 	
 -- set new_phrase
-	self.notes.PG[phrase_N] =  new_phrase
-	self.notes.nV[phrase_N] = #new_phrase
+	self.notes[phrase_N] = new_phrase
 	
 -- make sure number of vals in all phrases are the same
 	if self:check_amt_of_vals_in_phrases(phrase_N) then
@@ -275,7 +268,7 @@ Ins.set_phrase = function (self, phrase_type_char, new_phrase, phrase_N)
 ==== Arguments:
  = phrase_type_char (char):
 		- should be either 'n' or 'd'
-		- specifies whether to set obj.notes.PG  or obj.delays.PG 
+		- specifies whether to set obj.notes  or obj.delays 
 		- "notes" or "delays" is then assigned to `pts` (Phrase Type String)
 		- a complementary string gets stored in `pto` (Phrase Type Opposite)
 		- Example: if `phrase_type_char` = 'n', then 
@@ -285,7 +278,7 @@ Ins.set_phrase = function (self, phrase_type_char, new_phrase, phrase_N)
 		- the new phrase that will replace the old phrase at `phrase_N`
 		- is NOT a group of notes or delays, but a phrase of them.
  = phrase_N (number):
-		- specifies which phrase (in `notes.PG `/`delays.PG`) to set. 
+		- specifies which phrase (in `notes`/`delays`) to set. 
 --]=]
 	
 
@@ -295,8 +288,7 @@ Ins.set_phrase = function (self, phrase_type_char, new_phrase, phrase_N)
 	self:is_valid_phrase_index(pts, phrase_N, 1)
 	
 -- set new_phrase
-	self[pts].PG[phrase_N] =  new_phrase
-	self[pts].nV[phrase_N] = #new_phrase
+	self[pts][phrase_N] = new_phrase
 	
 -- make sure number of vals in all phrases are the same
 	if self:check_amt_of_vals_in_phrases(phrase_N) then

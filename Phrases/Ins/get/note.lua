@@ -12,7 +12,7 @@ note = function (self, phrase_N)
 	phrase_N = phrase_N or 1
 	
 	local i = self.count
-	local n = self.notes.PG[phrase_N][i]
+	local n = self.notes[phrase_N][i]
 	
 	return n
 end

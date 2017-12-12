@@ -19,11 +19,11 @@ return function (self, notes_phrase_N)
 	local matching = {all = true, n = true, d = true}
 	
 	--notes_phrase_N = notes_phrase_N or 1
-	local amt = self.notes.nV[(notes_phrase_N or 1)]
+	local amt = #self.notes[(notes_phrase_N or 1)]
 	
 	-- check against all same-type phrases
-	for i = 1,self.notes.nP do
-		if amt ~= self.notes.nV[i] then
+	for i = 1,#self.notes do
+		if amt ~= #self.notes[i] then
 			matching.n   = false
 			matching.all = false
 		end
@@ -47,8 +47,8 @@ return function (self, notes_phrase_N)
 				print("  = After setting `object.notes["..tostring(notes_phrase_N).."]`, ")
 			end
 		print("  = Number of notes in `object.notes[ ]` --> ...")
-			for i = 1,#self.notes.PG do
-				print("                                    ["..tostring(i).."]  --> "..tostring(#self.notes.PG[i]) )
+			for i = 1,#self.notes do
+				print("                                    ["..tostring(i).."]  --> "..tostring(#self.notes[i]) )
 			end
 		end		
 		print("  = Please use object:set_notes() / object:set_delays() ")

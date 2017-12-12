@@ -17,7 +17,7 @@ value_counter = function (self, set)
 	
 	--if o:check_amt_of_vals_in_phrases() then
 	--the above line should already have been asserted in ins.set_notes()
-	local top = o.notes.nV[1]
+	local top = #o.notes[1]
 	set = set or (top - 1)
 	local count = set
 	

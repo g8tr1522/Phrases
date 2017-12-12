@@ -36,7 +36,7 @@ value_counter = function (self, argt)
 	end
 	
 	
-	local top = self.notes.nV[1]
+	local top = #self.notes[1]
 	count = count % top
 	
 	if count==0 then count=top end
