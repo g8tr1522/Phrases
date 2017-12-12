@@ -6,8 +6,9 @@
 --
 --
 
-return function (self, delays_phrase_N)
+return function (self)
 	self = self.get_object  -- change self from `o.get` to `o`
-	return self.delays
+	
+	return self.delays.tn
 end
 

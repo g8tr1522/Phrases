@@ -35,9 +35,9 @@ package.path = package.path
 						.. ";./Phrases/utils/" 	.._file
 						.. ";./Phrases/tabler/"	.._file
 						.. ";./Phrases/DelaysMethods/"	.._file
-						.. ";./Phrases/NotesMethods/"	.._file
+						.. ";./Phrases/NotesMethods/"		.._file
+--
 
-						
 unpack = unpack or table.unpack -- Renoise API uses unpack, not table.unpack
 
 --==============================================================================
@@ -56,8 +56,8 @@ Ins.dm.__index = Ins.dm
 
 -- utility methods
 utils = {}
-utils.delays2pl = require('delays2pl')
-utils.forvals		= require('forvals')
+utils.delays2pls = require('delays2pls')
+utils.forvals		 = require('forvals')
 --tabler methods
 tabler = {}
 tabler.allidx		= require('ae1toend')
@@ -66,7 +66,6 @@ tabler.allidx		= require('ae1toend')
 
 --==============================================================================
 -- object Instantiation / OOP stuff
---
 --==============================================================================
 
 --------------------------------------------------------------------------------
@@ -100,7 +99,8 @@ end -- new
 -- Ins.make_obj
 -- a sub function of `Ins:new`
 Ins.make_object = function (argt)
-	local o = {}
+	local o  = {} 
+	o.delays = {} -- defined here bc it is assigned to in section "handle input argument table"
 	
 --handle input argument table
 	if type(argt)~="table" then
@@ -122,11 +122,11 @@ Ins.make_object = function (argt)
 		print("=== Don't forget to set `object.nopl`!") 
 	end
 	
-	if (argt.delays_UB or argt.dub) then
-		o.delays_UB = argt.delays_UB or argt.dub
+	if (argt.top or argt.dtop) then
+		o.delays.top = argt.top or argt.dtop
 	else 
-		o.delays_UB = 0
-		print("=== Don't forget to set `object.delays_UB`!") 
+		o.delays.top = 0
+		print("=== Don't forget to set `object.delays.top`!") 
 	end
 	
 	print()
@@ -151,9 +151,10 @@ Ins.make_object = function (argt)
 	o.count = 1
 	
 --now, construct the members for the notes and phrases groups
-	o.notes     = rep_table(argt.nonp, {})	-- a table of phrases (ie, note tables)
-	o.delays    = {}
-	--future: delays will have tt AND pl members which will be set at every call to Ins:set_delays()
+	o.notes      = rep_table(argt.nonp, {})	-- a table of phrases (ie, note tables)
+	o.delays.tn  = {}	-- Traditional Notation delays
+	o.delays.pl  = {}	-- Pattern Lines delays
+	--o.delays.tn0 = {}	-- programmer's Traditional Notation delays (ie, `o.delays.tn[i] - 1`)
 	
 --this discourages users from creating new keys in Ins objects (aka, shitty encapsulation)
 	o.__newindex = function (t,k,v)
@@ -203,7 +204,8 @@ Ins.print_info = function (self, options)
 	end; if string.find(options, 'l') then
 		  print("~~~ Object at "..tostring(self).." is an Ins object with "..tostring(#self.notes).." notes phrases.")
 	end; if string.find(options, 'd') then
-		  print("  ~ `object.delays` : ", unpack(self.delays))
+		  print("  ~ `object.delays.tn` :   ", unpack(self.delays.tn))
+		  print("  ~ `object.delays.pl` :   ", unpack(self.delays.pl))
 	end; if string.find(options, 'n') then
 		  print("  ~ `object.notes[ ]`: "..tostring(self.notes) )
 		   if string.find(options, 'p') then for i = 1,#self.notes do
@@ -220,7 +222,7 @@ end
 -- These functions are used in get/set functions to make sure that
 --		the 'group' construct is handled properly.
 --==============================================================================
-Ins.get_phrase_strings 						= require("get_phrase_strings")
+--Ins.get_phrase_strings 						= require("get_phrase_strings")
 Ins.is_valid_phrase_index 				= require("is_valid_phrase_index")
 Ins.check_amt_of_vals_in_phrases	= require("check_amt_of_vals_in_phrases")
 
@@ -256,9 +258,21 @@ end
 --------------------------------------------------------------------------------
 -- 
 Ins.set_delays = function (self, new_phrase)
-	self.delays = new_phrase
+	--Future: add error if delays.top or self.nopl isn't set yet
+	--Future: Having a ton of issues with using delays2pls here. 
+	--	rn, I'm just putting the phrase functionality directly in here
+	
+	self.delays.tn = new_phrase
+	
+	-- print(utils)
+	-- delays2pls = require('delays2pls')
+	-- self.delays.pl = utils.delays2pls(new_phrase, self.delays.top, self.nopl)
+	
+	for i,v in ipairs(new_phrase) do
+		self.delays.pl[i] = (v - 1) /self.delays.top *self.nopl
+	end
+	
 	self:check_amt_of_vals_in_phrases()
-	--future: set delays.tt and delays.pl
 end
 
 --------------------------------------------------------------------------------

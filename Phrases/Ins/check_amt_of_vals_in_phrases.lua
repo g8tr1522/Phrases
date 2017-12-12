@@ -40,7 +40,7 @@ return function (self, notes_phrase_N)
 		print("      between phrases in object "..tostring(self).."!")
 		if not matching.d and matching.n then
 		print("  = The number of delays does not match the number of notes.")
-		print("  = There are "..tostring(#self.delays).." values in `object.delays`, ")
+		print("  = There are "..tostring(#self.delays.tn).." values in `object.delays`, ")
 		print("      yet there are "..tostring(amt).." values in all `object.notes` phrases!")
 		elseif not matching.n then
 			if notes_phrase_N then

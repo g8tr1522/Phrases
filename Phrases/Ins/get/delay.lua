@@ -7,14 +7,10 @@
 --
 
 
-delay = function (self, phrase_N)
+return function (self, phrase_N)
 	self = self.get_object	-- change self from `o.get` to `o`
 	
 	local i = self.count
-	local d = self.delays[i]
 	
-	return d
+	return self.delays.tn[i]
 end
-
-
-return delay
