@@ -10,6 +10,7 @@ Ins = {}
 	-- print()
 -- end
 
+--[==[
 --pathdef setup
 
 -- _fileroot = "Phrases."
@@ -27,6 +28,12 @@ Ins = {}
 -- _sch_tabler = ";".._repopath.._fileroot.._tablerpath .."?.lua"		--searcher for files in 'tabler' folders
 
 -- package.path = package.path --_sch_file .. _sch_utils
+--]==]
+
+
+--==============================================================================
+-- requires
+--==============================================================================
 
 _file = "?.lua"
 package.path = package.path 
@@ -40,13 +47,21 @@ package.path = package.path
 
 unpack = unpack or table.unpack -- Renoise API uses unpack, not table.unpack
 
---==============================================================================
--- Metatable/namespace setup
---==============================================================================
+-- utility methods
+utils = {}
+utils.delays2pls = require('delays2pls')
+utils.forvals		 = require('forvals')
+
+--tabler methods
+tabler = {}
+tabler.allidx		= require('ae1toend')
+
+
+-- Ins submodules ---------------------
+---------------------------------------
 
 Ins.subtype = require('ins_subtypes')
-Ins.value_counter = require('value_counter')
-
+--Ins.value_counter = require('value_counter')
 
 Ins.dm = require('DelaysMethods')
 Ins.dm.__index = Ins.dm
@@ -54,21 +69,11 @@ Ins.dm.__index = Ins.dm
 -- Ins.nm.__index = Ins.nm
 
 
--- utility methods
-utils = {}
-utils.delays2pls = require('delays2pls')
-utils.forvals		 = require('forvals')
---tabler methods
-tabler = {}
-tabler.allidx		= require('ae1toend')
-
-
-
 --==============================================================================
 -- object Instantiation / OOP stuff
 --==============================================================================
 
---------------------------------------------------------------------------------
+---------------------------------------
 -- new
 Ins.new = function (self, argt)
 	if not argt then	-- in case user forgets to use colon syntax
@@ -78,24 +83,21 @@ Ins.new = function (self, argt)
 	
 	local o = Ins.make_object(argt)
 	
-	-- object namespace setup
-		o.md = {}
-		setmetatable(o.md, Ins.md)
-		o.md.get_object = o
-		-- o.mn = {}
-		-- setmetatable(o.mn, Ins.mn)
-		-- o.nm.get_object = o
-		o.get = {}
-		setmetatable(o.get, Ins.get)
-		o.get.get_object = o
-	
 	setmetatable(o, self)
 	self.__index = self
 	return o
 end -- new
 
 
---------------------------------------------------------------------------------
+---------------------------------------
+-- Ins.__newindex
+-- prevent creating keys in `Ins` class
+Ins.__newindex = function(t,k,v)
+	error("=== Error : tried to add a key \""..tostring(k).."\" to the 'Ins' class.",3)
+end
+
+
+---------------------------------------
 -- Ins.make_obj
 -- a sub function of `Ins:new`
 Ins.make_object = function (argt)
@@ -103,25 +105,26 @@ Ins.make_object = function (argt)
 	o.delays = {} -- defined here bc it is assigned to in section "handle input argument table"
 	
 --handle input argument table
+	-- is argt a table?
 	if type(argt)~="table" then
 		error("\n=== Wrong argument to Ins:new(argt) !"
 			    .."  = Expected type(argt) to be a table, but argt is type "..type(argt).."!"
 					,3)
 	end
-	
-	if (argt.nonp or argt.nnp or argt.np or argt.nn) then	--number of notes phrases
+	-- number of notes phrases:
+	if (argt.nonp or argt.nnp or argt.np or argt.nn) then	
 		argt.nonp = (argt.nonp or argt.nnp or argt.np or argt.nn)
 	else
 		argt.nonp = 1
 	end
-	
+	-- number of pattern lines:
 	if argt.nopl then
 		o.nopl = argt.nopl
 	else 
 		o.nopl = 0
 		print("=== Don't forget to set `object.nopl`!") 
 	end
-	
+	-- delays.tn upper bound
 	if (argt.top or argt.dtop) then
 		o.delays.top = argt.top or argt.dtop
 	else 
@@ -165,25 +168,31 @@ Ins.make_object = function (argt)
 		end
 	end
 	
+--object namespace setup
+	o.md = {}
+	setmetatable(o.md, Ins.md)
+	o.md.get_object = o
+	
+	-- o.mn = {}
+	-- setmetatable(o.mn, Ins.mn)
+	-- o.nm.get_object = o
+	
+	o.get = {}
+	setmetatable(o.get, Ins.get)
+	o.get.get_object = o
+--
 	return o
-end
-
-
---------------------------------------------------------------------------------
--- Ins.__newindex
--- prevent creating keys in `Ins` class
-Ins.__newindex = function(t,k,v)
-	error("=== Error : tried to add a key \""..tostring(k).."\" to the 'Ins' class.",3)
 end
 
 
 --==============================================================================
 -- print functions
--- 
 --==============================================================================
 
---------------------------------------------------------------------------------
--- 
+---------------------------------------
+-- print_info
+-- prints out locations of submodules and prints out values in o.notes and o.delays
+-- call with a string of options. Any of "alndp".
 Ins.print_info = function (self, options)
 	options = options or 'a'
 	
@@ -222,6 +231,7 @@ end
 -- These functions are used in get/set functions to make sure that
 --		the 'group' construct is handled properly.
 --==============================================================================
+
 --Ins.get_phrase_strings 						= require("get_phrase_strings")
 Ins.is_valid_phrase_index 				= require("is_valid_phrase_index")
 Ins.check_amt_of_vals_in_phrases	= require("check_amt_of_vals_in_phrases")
@@ -233,14 +243,12 @@ Ins.check_amt_of_vals_in_phrases	= require("check_amt_of_vals_in_phrases")
 Ins.get = require('_get')
 Ins.get.__index = Ins.get
 
+
 --==============================================================================
 -- setters
---
--- set_notes and set_delays are 'shell functions' for set_phrase
--- set_phrase uses several of the validation/checker functions (see related section)
 --==============================================================================
 
---------------------------------------------------------------------------------
+---------------------------------------
 -- 
 Ins.set_notes = function (self, new_phrase, phrase_N)
 	phrase_N = phrase_N or 1
@@ -255,7 +263,7 @@ Ins.set_notes = function (self, new_phrase, phrase_N)
 	end	
 end
 
---------------------------------------------------------------------------------
+---------------------------------------
 -- 
 Ins.set_delays = function (self, new_phrase)
 	--Future: add error if delays.top or self.nopl isn't set yet
@@ -273,41 +281,6 @@ Ins.set_delays = function (self, new_phrase)
 	end
 	
 	self:check_amt_of_vals_in_phrases()
-end
-
---------------------------------------------------------------------------------
--- 
-Ins.set_phrase = function (self, phrase_type_char, new_phrase, phrase_N)
---[=[ set a single notes/delays phrase.
-==== Arguments:
- = phrase_type_char (char):
-		- should be either 'n' or 'd'
-		- specifies whether to set obj.notes  or obj.delays 
-		- "notes" or "delays" is then assigned to `pts` (Phrase Type String)
-		- a complementary string gets stored in `pto` (Phrase Type Opposite)
-		- Example: if `phrase_type_char` = 'n', then 
-				`pts` = "notes"
-				`pto` = "delays"
- = new_phrase (table of numbers):
-		- the new phrase that will replace the old phrase at `phrase_N`
-		- is NOT a group of notes or delays, but a phrase of them.
- = phrase_N (number):
-		- specifies which phrase (in `notes`/`delays`) to set. 
---]=]
-	
-
--- check input args
-	local pts,pto = Ins.get_phrase_strings(phrase_type_char)
-	phrase_N = phrase_N or 1
-	self:is_valid_phrase_index(pts, phrase_N, 1)
-	
--- set new_phrase
-	self[pts][phrase_N] = new_phrase
-	
--- make sure number of vals in all phrases are the same
-	if self:check_amt_of_vals_in_phrases(phrase_N) then
-		self:vc(1)
-	end
 end
 
 
