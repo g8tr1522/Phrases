@@ -30,7 +30,7 @@
 --
 
 onvals = nil
-idx = require('phrases.tabler.ae1toend')
+idx = require('phrases.tabler.indexer')
 
 onvals = function (PG, Psel, Vsel, func)
 	if PG.PG then

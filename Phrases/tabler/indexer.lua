@@ -1,14 +1,14 @@
 
 --------------------------------------------------------------------------------
--- tabler.ae1toend (endd)
+-- tabler.indexer (last)
 --
-----Returns an array with elements {1,2,3, ... , endd}
+----Returns an array with elements {1,2,3, ... , last}
 --
 
 
-return function (endd)
+return function (last)
 	t = {}
-	for i = 1,endd do
+	for i = 1,last do
 		t[i] = i
 	end
 	return t

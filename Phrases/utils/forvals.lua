@@ -15,7 +15,7 @@
 --
 
 forvals = nil
-idx = require('phrases.tabler.ae1toend')
+idx = require('Phrases.tabler.indexer')
 
 forvals = function (PG, Psel, Vsel, func)
 	if PG.PG then

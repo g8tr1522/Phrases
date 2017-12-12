@@ -54,7 +54,7 @@ utils.forvals		 = require('forvals')
 
 --tabler methods
 tabler = {}
-tabler.allidx		= require('ae1toend')
+tabler.indexer   = require('indexer')
 
 
 -- Ins submodules ---------------------
@@ -169,12 +169,12 @@ Ins.make_object = function (argt)
 	end
 	
 --object namespace setup
-	o.md = {}
-	setmetatable(o.md, Ins.md)
-	o.md.get_object = o
+	o.dm = {}
+	setmetatable(o.dm, Ins.dm)
+	o.dm.get_object = o
 	
-	-- o.mn = {}
-	-- setmetatable(o.mn, Ins.mn)
+	-- o.nm = {}
+	-- setmetatable(o.nm, Ins.nm)
 	-- o.nm.get_object = o
 	
 	o.get = {}

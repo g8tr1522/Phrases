@@ -2,7 +2,7 @@ tabler = {}
 _root = 'Phrases.tabler.'
 
 
-tabler["ae1toend"] 	=  require(_root..'ae1toend')
+tabler["indexer"] 	=  require(_root..'indexer')
 tabler["repeat"]		=  require(_root..'repeat')
 	tabler["all"]			  =require(_root..'repeat')
 

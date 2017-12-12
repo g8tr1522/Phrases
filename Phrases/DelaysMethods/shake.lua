@@ -48,7 +48,7 @@ unpack = unpack or table.unpack -- Renoise API uses unpack, not table.unpack
 
 
 shake = function (self, note_N, ... )
-	self = getmetatable(self) --turn self into `obj` rather than `obj.m_delays`
+	self = self.get_object	-- change self from `o.dm` to `o`
 	
 --handle arguments
 	--handle optional argument
