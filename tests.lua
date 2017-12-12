@@ -8,7 +8,7 @@ g = {
   {5,15,25,35,45},
 }
 
-obj = Phrases.Ins:new{subtype="mp_lead", top=4, nopl=64, nonp=3}
+obj = Phrases.Ins:new{subtype="mp_lead", top=5, nopl=64, nonp=3}
 obj:print_info()
 
 obj:set_notes{10,20,30,40}

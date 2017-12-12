@@ -266,10 +266,10 @@ Ins.set_delays = function (self, new_phrase)
 	
 	-- print(utils)
 	-- delays2pls = require('delays2pls')
-	-- self.delays.pl = utils.delays2pls(new_phrase, self.delays.top, self.nopl)
+	-- self.delays.pl = utils.delays2pls(t, self.delays.top, self.nopl)
 	
 	for i,v in ipairs(new_phrase) do
-		self.delays.pl[i] = (v - 1) /self.delays.top *self.nopl
+		self.delays.pl[i] = (v - 1) /(self.delays.top-1) *self.nopl
 	end
 	
 	self:check_amt_of_vals_in_phrases()

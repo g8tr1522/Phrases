@@ -13,7 +13,7 @@
 
 
 return function (delay, delays_UB, nopl)
-	return (delay - 1) /delays_UB *nopl
+	return (delay - 1)/(delays_UB - 1) *nopl
 end
 
 
