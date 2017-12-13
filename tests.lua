@@ -26,3 +26,9 @@ obj:print_info()
 	-- print(string.format("g[%d][%d] = %g", t,i,v))
 -- end
 
+
+print()
+for _, i,v in Phrases.utils.iters.selvals(g[3], {1,2,4,5}) do
+	g[i] = v*2
+	print(string.format("g[%d] = %g", i,g[i]))
+end

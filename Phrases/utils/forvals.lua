@@ -17,6 +17,7 @@
 forvals = nil
 idx = require('Phrases.tabler.indexer')
 
+
 forvals = function (PG, Psel, Vsel, func)
 	if PG.PG then
 		PG = PG.PG	--this allows user to pass `object.notes` to PG instead of `object.notes.PG`
