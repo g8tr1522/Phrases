@@ -14,7 +14,6 @@
 ----For Author: lines that are different from onvals are marked with "--!"
 --
 
-forvals = nil
 idx = require('Phrases.tabler.indexer')
 
 

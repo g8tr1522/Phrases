@@ -2,11 +2,26 @@
 --------------------------------------------------------------------------------
 -- utils.iter.selpairs (ary, sel)
 --
+----Iterator which behaves similar to ipairs, but `sel` is array of integers 
+--		corresponding to indices that ipairs should iterate over.
+--
 ----Has three 'modes' depending of what type `sel` is:
---	-- sel is a table (basic usage)
---			
-
-
+--	-- sel is nil
+--		- The `selpairs` should then behave like ipairs.
+--	-- sel is a number (special case)
+--		- `selpairs` iterates over just a single element, `ary[sel]`
+--		- Not recommended. (Do you really need an iterator?)
+--	-- sel is a table of integers
+--		- Works like ipairs, except `i` becomes sel[1], sel[2], ... sel[#sel]
+--
+----Example:
+--		for i,v in selpairs(ary, {1,4,5}) do
+--			str = string.format("ary[%d] = %g", i,v)
+--			print(str)
+--		end
+--		--this should iterate only over elements 1,4,5 of `ary`
+--
+--
 
 
 local function selpairs(ary, sel)

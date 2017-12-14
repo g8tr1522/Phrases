@@ -6,6 +6,7 @@ _root = "Phrases.utils."
 utils["delays2pls"] = require(_root..'delays2pls')
 utils["delay2pl"] 	= require(_root..'delay2pl')
 utils["forvals"] 		= require(_root..'forvals')
+utils["forgroup"] 	= require(_root..'forgroup')
 utils["onvals"] 		= require(_root..'onvals')
 --right now, preloaded package is "phrases.utils"
 
