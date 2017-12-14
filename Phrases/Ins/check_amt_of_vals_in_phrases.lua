@@ -29,7 +29,7 @@ return function (self, notes_phrase_N)
 		end
 	end
 	if matching.n then
-		if amt ~= #self.delays then
+		if amt ~= #self.delays.tn then
 			matching.d   = false
 			matching.all = false
 		end

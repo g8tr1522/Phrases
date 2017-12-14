@@ -39,6 +39,7 @@ _file = "?.lua"
 package.path = package.path 
 						.. ";./Phrases/" 				.._file
             .. ";./Phrases/Ins/" 		.._file
+            .. ";./Phrases/iters/"  .._file
 						.. ";./Phrases/utils/" 	.._file
 						.. ";./Phrases/tabler/"	.._file
 						.. ";./Phrases/DelaysMethods/"	.._file
@@ -180,6 +181,10 @@ Ins.make_object = function (argt)
 	o.get = {}
 	setmetatable(o.get, Ins.get)
 	o.get.get_object = o
+	
+	o.set = {}
+	setmetatable(o.set, Ins.set)
+	o.set.get_object = o
 --
 	return o
 end
@@ -247,6 +252,8 @@ Ins.get.__index = Ins.get
 --==============================================================================
 -- setters
 --==============================================================================
+Ins.set = require('_set')
+Ins.set.__index = Ins.set
 
 ---------------------------------------
 -- 
