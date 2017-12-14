@@ -3,7 +3,7 @@
 -- utils.forgroup (group, Psel, Vsel, func)
 --
 ----Do a function `func` on all the values in `group`.
---	See function description for utils.iters.selpairs to get a better understanding.
+--	See function description for iters.selpairs to get a better understanding.
 --	Reminder: In this library, a `group` means a table of arrays.
 --
 ----Input Arguments:
@@ -68,7 +68,7 @@
 --			
 
 
-selpairs = require('Phrases.utils.iters.selpairs')
+selpairs = require('Phrases.iters.selpairs')
 unpack = unpack or table.unpack -- Renoise API uses unpack, not table.unpack
 
 

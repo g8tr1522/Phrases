@@ -10,7 +10,7 @@ Phrases = {}
 -- --Phrases.mNotes = require('Phrases.mNotes')
 
 -- Phrases.utils 	= require(__mainroot..'utils')
--- --Phrases.utils.iters = require('Phrases.utils.iters')
+-- Phrases.iters  = require('Phrases.iters')
 
 -- Phrases.tabler 	= require(__mainroot..'tabler')
 
@@ -26,7 +26,7 @@ Phrases.DelaysMethods = require('DelaysMethods')
 --Phrases.NotesMethods = require('NotesMethods')
 
 Phrases.utils 	= require('utils')
---Phrases.utils.iters = require('Phrases.utils.iters')
+Phrases.iters   = require('iters')
 
 Phrases.tabler 	= require('tabler')
 
