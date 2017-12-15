@@ -185,6 +185,10 @@ Ins.make_object = function (argt)
 	o.set = {}
 	setmetatable(o.set, Ins.set)
 	o.set.get_object = o
+	
+	o.clipboard = {}
+	setmetatable(o.clipboard, Ins.clipboard)
+	o.clipboard.get_object = o
 --
 	return o
 end
@@ -254,6 +258,13 @@ Ins.get.__index = Ins.get
 --==============================================================================
 Ins.set = require('_set')
 Ins.set.__index = Ins.set
+
+
+--==============================================================================
+-- clipboard functions
+--==============================================================================
+Ins.clipboard = require('_clipboard')
+Ins.clipboard.__index = Ins.clipboard
 
 
 

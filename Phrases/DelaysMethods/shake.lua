@@ -47,17 +47,19 @@
 unpack = unpack or table.unpack -- Renoise API uses unpack, not table.unpack
 
 
-shake = function (self, note_N, ... )
+shake = function (self, argt)
 	self = self.get_object	-- change self from `o.dm` to `o`
 	
---handle arguments
-	--handle optional argument
-	local min_delay = nil
-	if #{...}==0 then
-		min_delay = 0.25
-	else
-		min_delay = ...
+--handle arguments table
+	if argt.min_delay = nil then
+		argt.min_delay = 0.25
 	end
+	
+	if type(argt.Vsel)="number" then
+	elseif type(argt.Vsel)="table" then
+	elseif type(argt.Vsel)="string" then
+	end 
+	
 	
 	--create a table if note_N was an integer
 	if type(note_N) == "number" then
