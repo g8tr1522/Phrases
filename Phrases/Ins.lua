@@ -255,40 +255,6 @@ Ins.get.__index = Ins.get
 Ins.set = require('_set')
 Ins.set.__index = Ins.set
 
----------------------------------------
--- 
-Ins.set_notes = function (self, new_phrase, phrase_N)
-	phrase_N = phrase_N or 1
-	self:is_valid_phrase_index(phrase_N, 1)
-	
--- set new_phrase
-	self.notes[phrase_N] = new_phrase
-	
--- make sure number of vals in all phrases are the same
-	if self:check_amt_of_vals_in_phrases(phrase_N) then
-		self:vc(1)
-	end	
-end
-
----------------------------------------
--- 
-Ins.set_delays = function (self, new_phrase)
-	--Future: add error if delays.top or self.nopl isn't set yet
-	--Future: Having a ton of issues with using delays2pls here. 
-	--	rn, I'm just putting the phrase functionality directly in here
-	
-	self.delays.tn = new_phrase
-	
-	-- print(utils)
-	-- delays2pls = require('delays2pls')
-	-- self.delays.pl = utils.delays2pls(t, self.delays.top, self.nopl)
-	
-	for i,v in ipairs(new_phrase) do
-		self.delays.pl[i] = (v - 1) /(self.delays.top-1) *self.nopl
-	end
-	
-	self:check_amt_of_vals_in_phrases()
-end
 
 
 

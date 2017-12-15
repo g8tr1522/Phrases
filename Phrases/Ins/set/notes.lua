@@ -6,25 +6,31 @@
 --
 --
 
--- is_valid_phrase_index 
-	-- = require('Phrases.Ins.is_valid_phrase_index')
--- require('Phrases.Ins.check_amt_of_vals_in_phrases')
+
+require('Phrases.iters.selpairs')
+unpack = unpack or table.unpack -- Renoise API uses unpack, not table.unpack
 
 
 notes = function (self, sel, notes_array)
 	self = self.get_object	-- change self from `o.set` to `o`
 	
-	sel = sel or 1
-	print("--- location of self",tostring(self))
-	print("  - location of self.is_valid_phrase_index", tostring(self.is_valid_phrase_index))
+	if not notes_array then
+		notes_array = sel
+		sel = {1}
+	end
+	if type(sel)~="table" then sel={sel} end
 	
-	self:is_valid_phrase_index(sel, 1)
-	
--- set selected notes array
-	self.notes[sel] = notes_array
+	for _,v in pairs(sel) do
+		local t = self.notes[v]
+		if not t then
+			print("~~~ Adding new notes phrase at `object.notes["..tostring(v).."]`\n")
+		end
+		
+		self.notes[v] = notes_array
+	end
 	
 -- make sure number of vals in all phrases are the same
-	if self:check_amt_of_vals_in_phrases(sel) then
+	if self:check_amt_of_vals_in_phrases(unpack(sel)) then
 		self:vc(1)
 	end	
 end
