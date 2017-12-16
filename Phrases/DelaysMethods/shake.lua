@@ -48,48 +48,58 @@ unpack = unpack or table.unpack -- Renoise API uses unpack, not table.unpack
 
 
 shake = function (self, argt)
-	self = self.get_object	-- change self from `o.dm` to `o`
+--fix between object method call and detatched function call
+	if self.get_object then
+		self = self.get_object	-- change self from `o.dm` to `o`
+		temp = self.delays.tn		-- set temporary table
+	else
+		temp = argt.table or self	-- if we do a detatched function call
+	end
+	--`temp` is now the table this function operates on
 	
 --handle arguments table
+	--minimum delay jump
 	if argt.min_delay = nil then
 		argt.min_delay = 0.25
 	end
 	
+	--Vsel 
+	local Vsel_was_number = false
+	
 	if type(argt.Vsel)="number" then
-	elseif type(argt.Vsel)="table" then
+		Vsel_was_number = true
+		argt.Vsel = {argt.Vsel}
+	elseif type(argt.Vsel)="table" then	--check for table of indices
+		if type(argt.Vsel[1])~="number" then
+			error("=== Error in DelaysMethods.shake"
+					.."  = Argument Vsel should be a table of numbers."
+					.."  = These numbers will correspond to the indices to operate over.", 2)
+		end
 	elseif type(argt.Vsel)="string" then
+		if argt.Vsel="all" then
+			argt.Vsel = Phrases.tabler.idx( #temp )
+		end
+	else
+		error("=== Error in DelaysMethods.shake"
+				.."  = Argument Vsel should be either ..."
+				.."\t\t- a table of indices"
+				.."\t\t- a number"
+				.."\t\t- a string", 2)
 	end 
 	
-	
-	--create a table if note_N was an integer
-	if type(note_N) == "number" then
-		local rndm_Ns = {}
-		for ii = 1,self.N do
-			rndm_Ns[ii] = ii	--this is the table {1,2,3,4, ... , self.N}
-		end
-		
-		if 	   note_N == -1 then
-			note_N = rndm_Ns	--this if part is unnecessary and needs to be removed
-		elseif note_N == 0  then
-			return 	--don't change any delays
-		elseif note_N >  0  then
-			local rand_index = nil 
-			local ii = self.N
-			
-			while ii > note_N do
-				rand_index = math.random(1, #rndm_Ns)
-				table.remove(rndm_Ns, rand_index)
-				ii = ii-1
-			end
-		end
-		
-		note_N = rndm_Ns
-	elseif type(note_N) == "table" then
-		--here, just warn the user if he provides an index outside the range of dels_tt
-		local maxidx = math.max(unpack(note_N))
-		local minidx = math.min(unpack(note_N))
-		if (maxidx > self.N) or (minidx < 1) then
-			error("Error in shake_delay : argument note_N : table must be indices for dels_tt. ie, indices are out of range",2)
+	--shuffle Vsel
+	if argt.random==true or argt.shuffle==true then
+		if Vsel_was_number then
+			local number = unpack(argt.Vsel)
+			argt.Vsel = Phrases.tabler.idx_shuffle(#temp)
+			if number <= #temp then
+				for i=1,(#temp-number) do
+					argt.Vsel[#argt.Vsel] = nil
+				end
+			end	--future: if number is larger than the number of delays, then do something
+		else
+			local foo = require('Chance.chance.helpers.shuffle')
+			argt.Vsel = foo(argt.Vsel)
 		end
 	end
 	
