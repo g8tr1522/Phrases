@@ -55,7 +55,7 @@ utils.forvals		 = require('forvals')
 
 --tabler methods
 tabler = {}
-tabler.indexer   = require('indexer')
+tabler.idx   = require('idx')
 
 
 -- Ins submodules ---------------------
