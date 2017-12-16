@@ -1,0 +1,6 @@
+[submodule "Chance"]
+	
+	path = Chance
+	
+	url = https://github.com/ejmr/chance.lua
+

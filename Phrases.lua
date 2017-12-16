@@ -31,6 +31,7 @@ Phrases.iters   = require('iters')
 Phrases.tabler 	= require('tabler')
 
 
+Phrases.chance	= require('Chance/chance')
 
 
 
