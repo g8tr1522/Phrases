@@ -104,11 +104,6 @@ shake = function (self, argt)
 	
 	
 --main part here
-	print()
-	if type(argt.Vsel)=="table" then
-	print("argt.Vsel has elements ",table.unpack(argt.Vsel))
-	end
-	print("temp      has elements ",table.unpack(temp))
 	for _,v in ipairs(argt.Vsel) do
 		local dmin = 0
 		local dmax = 0
@@ -123,16 +118,11 @@ shake = function (self, argt)
 			dmin = temp[v-1]
 			dmax = temp[v+1]
 		end
-		print("dmin           :",dmin)
-		print("dmax           :",dmax)
-		print("argt.min_delay :",argt.min_delay)
-		print("temp["..tostring(v).."]        :",temp[v])
 		
 		possibly = range(dmin, dmax, argt.min_delay, temp[v])
-		print("possibly has elements ", table.unpack(possibly))
 		temp[v] = possibly[ math.random(#possibly) ]
 	end
-	print()
+	
 	self.set:delays(temp)
 	return temp
 end
