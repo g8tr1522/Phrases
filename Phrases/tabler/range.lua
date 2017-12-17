@@ -13,7 +13,6 @@
 
 
 range = function (start, stop, step, center)
-	print("function range is type "..type(range))
 --handle input args
 	if not step then
 		if not stop then
@@ -33,13 +32,13 @@ range = function (start, stop, step, center)
 	local algo = function(start, stop, step)
 		local t = {}
 		
-		if start<stop then
-			for i=1,math.floor((stop-start)/step) do
+		if start<stop then	--ascending
+			for i=1,(1+math.floor((stop-start)/step)) do
 				t[i] = start + step*(i-1)
 			end
-		elseif start>stop then
-			for i=1,math.floor((start-stop)/step) do
-				t[i] = start - step*(i-1)
+		elseif start>stop then	--descending
+			for i=1,(1+math.floor((start-stop)/math.abs(step))) do
+				t[i] = start + step*(i-1)
 			end
 		else
 			t = {start}
@@ -47,33 +46,36 @@ range = function (start, stop, step, center)
 		
 		return t
 	end
-	
+
 --handle center argument	
+	local t = {}
+	
 	if not center then
-		local t = algo(start,stop,step)
+		t = algo(start,stop,step)
 	else
 		if stop < start then
-			error("=== Warning for tabler.range!"
-					.."  = `center` argument not supported for descending arrays"
-					,2)
+			local tb = range(stop,start,-1*step,center)
+			for i=1,#tb do
+				t[i] = tb[#tb - (i-1)]
+			end
+			-- error("=== Warning for tabler.range!"
+					-- .."  = `center` argument not supported for descending arrays"
+					-- ,2)
 		else
 			local t1  = algo(center,start,step)
 			local t2  = algo(center,stop, step)	
 			-- now reverse the values in t1
 			-- this loop skips the first element in `t1` so that `center` isn't included twice in `t`
-			for i=2,#t1 do
-				t[ #t1 - (i-2) ] = t1[i] 
+			for i=1,(#t1-1) do 
+				t[i] = t1[#t1 - (i-1)] 
 			end
 			-- now concatenate t1 and t2
 			for i=1,#t2 do
-				t[i + #t1] = t2[i]
+				t[i + (#t1-1)] = t2[i]
 			end
-			
-			return t
 		end
 	end	
 	
-	print("t is type "..type(t))
 	return t
 end
 
