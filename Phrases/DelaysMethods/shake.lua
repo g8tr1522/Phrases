@@ -67,8 +67,15 @@ shake = function (self, argt)
 	local Vsel_was_number = false
 	
 	if type(argt.Vsel)="number" then
-		Vsel_was_number = true
-		argt.Vsel = {argt.Vsel}
+		--Vsel_was_number = true
+		--argt.Vsel = {argt.Vsel}
+		local number = argt.Vsel
+		argt.Vsel = Phrases.tabler.idx_shuffled(#temp)
+		if number <= #temp then
+			for i=1,(#temp-number) do
+				argt.Vsel[#argt.Vsel] = nil
+			end
+		end	--future: if number is larger than the number of delays, then do something
 	elseif type(argt.Vsel)="table" then	--check for table of indices
 		if type(argt.Vsel[1])~="number" then
 			error("=== Error in DelaysMethods.shake"
@@ -90,13 +97,6 @@ shake = function (self, argt)
 	--shuffle Vsel
 	if argt.random==true or argt.shuffle==true then
 		if Vsel_was_number then
-			local number = unpack(argt.Vsel)
-			argt.Vsel = Phrases.tabler.idx_shuffle(#temp)
-			if number <= #temp then
-				for i=1,(#temp-number) do
-					argt.Vsel[#argt.Vsel] = nil
-				end
-			end	--future: if number is larger than the number of delays, then do something
 		else
 			local foo = require('Chance.chance.helpers.shuffle')
 			argt.Vsel = foo(argt.Vsel)
@@ -105,47 +105,11 @@ shake = function (self, argt)
 	
 	
 --main part here
-	local indices = note_N	--we're transferring the input arg to a new var here. 
-			 note_N = nil		--The loop below will refer to note_N, but note_N will just be the currently selected value in indices
-	local new_dels_tt = self.dels_tt	--this will temporarily hold the new delays. (We call set_delays at the end of foo)
-	
-	for k,v in pairs(indices) do
-		note_N = v
+	for _,v in ipairs(argt.Vsel) do
 		
-		local dmin, dmax = nil
-			
-		--decide min and max values of new possible delays
-		if 		note_N == 1      then
-			--if first note
-			dmin = 1
-			dmax = -min_delay + self.dels_tt[2] 
-		elseif 	note_N == self.N then
-			--if last note
-			dmax = -min_delay + self.dels_tt_max
-			dmin =  min_delay + self.dels_tt[self.N-1] 	--next to last note delay plus min_delay
-		else
-			dmin =  min_delay + self.dels_tt[note_N - 1]
-			dmax = -min_delay + self.dels_tt[note_N + 1]
-		end
-		
-		--now create a table of possible new delays
-		local possibly = {}
-		local ii = 0	--table index for following loop
-		for val = dmin,dmax,min_delay do
-			ii  = ii+1
-			possibly[ii] = val
-		end
-		
-		--replace old delay (for note note_N) with new one
-		local new_delay 	= possibly[math.random(1,ii)] 
-		new_dels_tt[note_N] = new_delay
-	end
-	
-	--self.dels_pl = nil
-	print("    in shake_delay, getmetatable( self ) = "..tostring(getmetatable(self)) )
-	self.set_delays(self, new_dels_tt)
 	
 	
 end
+
 
 return shake

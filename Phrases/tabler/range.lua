@@ -6,10 +6,10 @@
 --
 
 --future: 
--- allow descending ranges to be created
+-- allow descending ranges to be created when using center
 -- When using center arg, use a function that concatenates t1 and t2
 --		also, a function that reverses t1
---
+-- 
 
 
 range = function (start, stop, step, center)
