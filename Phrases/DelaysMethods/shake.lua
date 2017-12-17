@@ -45,6 +45,7 @@
 --]=]---[=[--
 
 unpack = unpack or table.unpack -- Renoise API uses unpack, not table.unpack
+range = loadfile('Phrases.tabler.range')
 
 
 shake = function (self, argt)
@@ -58,15 +59,16 @@ shake = function (self, argt)
 	--`temp` is now the table this function operates on
 	
 --handle arguments table
+
 	--minimum delay jump
-	if argt.min_delay = nil then
+	if not argt.min_delay then
 		argt.min_delay = 0.25
 	end
 	
 	--Vsel 
 	local Vsel_was_number = false
 	
-	if type(argt.Vsel)="number" then
+	if type(argt.Vsel)=="number" then
 		--Vsel_was_number = true
 		--argt.Vsel = {argt.Vsel}
 		local number = argt.Vsel
@@ -76,14 +78,14 @@ shake = function (self, argt)
 				argt.Vsel[#argt.Vsel] = nil
 			end
 		end	--future: if number is larger than the number of delays, then do something
-	elseif type(argt.Vsel)="table" then	--check for table of indices
+	elseif type(argt.Vsel)=="table" then	--check for table of indices
 		if type(argt.Vsel[1])~="number" then
 			error("=== Error in DelaysMethods.shake"
 					.."  = Argument Vsel should be a table of numbers."
 					.."  = These numbers will correspond to the indices to operate over.", 2)
 		end
-	elseif type(argt.Vsel)="string" then
-		if argt.Vsel="all" then
+	elseif type(argt.Vsel)=="string" then
+		if argt.Vsel=="all" then
 			argt.Vsel = Phrases.tabler.idx( #temp )
 		end
 	else
@@ -95,20 +97,35 @@ shake = function (self, argt)
 	end 
 	
 	--shuffle Vsel
-	if argt.random==true or argt.shuffle==true then
-		if Vsel_was_number then
-		else
-			local foo = require('Chance.chance.helpers.shuffle')
-			argt.Vsel = foo(argt.Vsel)
-		end
+	if (argt.shuffle==true) or (argt.shuffle==nil) then
+		local chance = require('Chance.chance')
+		argt.Vsel = chance.helpers.shuffle(argt.Vsel)
 	end
 	
 	
 --main part here
 	for _,v in ipairs(argt.Vsel) do
+		local dmin = 0
+		local dmax = 0
 		
+		if v==1 then
+			dmin = 1
+			dmax = temp[2] or self.delays.top
+		elseif v==#temp then
+			dmin = temp[#temp-1] or 1
+			dmax = self.delays.top
+		else
+			dmin = temp[v-1]
+			dmax = temp[v+1]
+		end
+		
+		possibly = range(dmin, dmax, argt.min_delay, temp[v])
+		print("possibly is type "..type(possibly))
+		temp[v] = possibly[ math.random(#possibly) ]
+	end
 	
-	
+	self.set:delays(temp)
+	return temp
 end
 
 

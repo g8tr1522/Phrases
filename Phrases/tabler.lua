@@ -4,6 +4,7 @@ _root = 'Phrases.tabler.'
 
 tabler["repeat"]					= require(_root..'repeat')
 	tabler.all								= tabler["repeat"]
+tabler["range"]						= require(_root..'range')
 
 --functions used to create arrays that index other tables
 tabler["idx"] 						= require(_root..'idx')
