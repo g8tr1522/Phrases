@@ -55,6 +55,8 @@ range = loadfile('Phrases.tabler.range')
 
 
 shake = function (self, argt)
+	local temp = {}	--`temp` is now the table this function operates on
+	
 --fix between object method call and detatched function call
 	if self.get_object then
 		self = self.get_object	-- change self from `o.dm` to `o`
@@ -62,7 +64,6 @@ shake = function (self, argt)
 	else
 		temp = argt.table or self	-- if we do a detatched function call
 	end
-	--`temp` is now the table this function operates on
 	
 --handle arguments table
 	--assign unnamed args to proper key names
@@ -104,10 +105,12 @@ shake = function (self, argt)
 	
 	
 --main part here
+	local dmin = 0
+	local dmax = 0
+	local possibly = {}
+	
 	for _,v in ipairs(argt.Vsel) do
 		if (v>0) and (v <= #temp) then
-			local dmin = 0
-			local dmax = 0
 			
 			if v==1 then
 				dmin = 1 - argt.min_delay		-- see assignment to `possibly` 

@@ -9,7 +9,7 @@
 
 
 return function (N, object)
-	rt = {}
+	local rt = {}
 	
 	if N == 0 then
 		rt[1] = 0

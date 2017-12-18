@@ -81,7 +81,7 @@ Ins.dm.__index = Ins.dm
 -- validation/checker functions
 Ins.is_valid_phrase_index 				= require("is_valid_phrase_index")
 Ins.check_amt_of_vals_in_phrases	= require("check_amt_of_vals_in_phrases")
---Ins.get_phrase_strings 						= require("get_phrase_strings")
+-- Ins.get_phrase_strings 						= require("get_phrase_strings")
 
 
 ---------------------------------------
@@ -142,15 +142,18 @@ Ins.make_object = function (argt)
 	-- is argt a table?
 	if type(argt)~="table" then
 		error("\n=== Wrong argument to Ins:new(argt) !"
-			    .."  = Expected type(argt) to be a table, but argt is type "..type(argt).."!"
+			    .."\n= Expected type(argt) to be a table, but argt is type "..type(argt).."!"
 					,3)
 	end
+	
 	-- number of notes phrases:
-	if (argt.nonp or argt.nnp or argt.np or argt.nn) then	
-		argt.nonp = (argt.nonp or argt.nnp or argt.np or argt.nn)
-	else
-		argt.nonp = 1
-	end
+	argt.nonp = argt.nonp or argt.nnp or argt.np or argt.nn or argt.nP or 1
+	-- if (argt.nonp or argt.nnp or argt.np or argt.nn) then	
+		-- argt.nonp = (argt.nonp or argt.nnp or argt.np or argt.nn)
+	-- else
+		-- argt.nonp = 1
+	-- end
+	
 	-- number of pattern lines:
 	if argt.nopl then
 		o.nopl = argt.nopl
@@ -158,10 +161,12 @@ Ins.make_object = function (argt)
 		o.nopl = 0
 		print("=== Don't forget to set `object.nopl`!") 
 	end
+	
 	-- delays.tn upper bound
-	if (argt.top or argt.dtop) then
-		o.delays.top = argt.top or argt.dtop
-	else 
+	argt.top = argt.top or argt.dtop or argt.dub or argt.delays_UB
+	if argt.top then
+		o.delays.top = argt.top
+	else
 		o.delays.top = 0
 		print("=== Don't forget to set `object.delays.top`!") 
 	end

@@ -9,7 +9,7 @@
 
 
 return function (last)
-	t = {}
+	local t = {}
 	for i = 1,last do
 		t[i] = i
 	end

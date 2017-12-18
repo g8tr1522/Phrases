@@ -18,7 +18,9 @@ I put the sections in order of highest priority to lowest.
 -------------------------------------------------------------------------------
 ## Necessary improvements
 - fix Ins.print_info() to adopt new functionality in Ins.set:notes()
-
+- error messages in `Ins.set:delays` don't work as expected
+	- (when checking for `self.nopl` and `self.delays.top`)
+	- Test by setting one or the other, or none, and see if messages print out.
 
 
 -------------------------------------------------------------------------------
@@ -39,7 +41,10 @@ I put the sections in order of highest priority to lowest.
 
 -------------------------------------------------------------------------------
 ## Efficiency Improvements
-
+- In `Ins.make_object`, `argt.nonp` isn't completely necessary.
+	- This is because `Ins.set:notes` allows new note phrases to be instantiated.
+	- The only purpose `argt.nonp` serves is to give warnings when 
+		`Ins.set:notes` is called.
 
 
 
