@@ -57,7 +57,21 @@ I put the sections in order of highest priority to lowest.
 ===============================================================================
 # Organizing this library
 
+-------------------------------------------------------------------------------
+## `utils`
+- As of now, utils is kind of a mixed bag of functions. 
+- I intend for it to be any functions which are used in the `Ins` class, but
+the user may have use for (outside of the `Ins` class).
 
+-------------------------------------------------------------------------------
+## Style Guide
+- Make all files conform to this style guide:
+	- https://github.com/luarocks/lua-style-guide
+	- so far, I haven't even tried doing this, but I may fix it all some day...
+	- Also, make `Ins.lua` module in the style of this:
+		http://hisham.hm/2014/01/02/how-to-write-lua-modules-in-a-post-module-world/
+	- Maybe make this a luarock one day, but probably not.
+	
 -------------------------------------------------------------------------------
 ## Library location in xStream
 - Ultimately, I want to have 'Phrases.lua' be in the same folder as 
@@ -79,11 +93,6 @@ the Phrases module?
 - The issue is that xStream only allows just *one* more require in main.lua.
 Any other requires produces strange errors. 
 
--------------------------------------------------------------------------------
-## `utils`
-- As of now, utils is kind of a mixed bag of functions. 
-- I intend for it to be any functions which are used in the `Ins` class, but
-the user may have use for (outside of the `Ins` class).
 
 
 ===============================================================================
