@@ -58,16 +58,49 @@ tabler = {}
 tabler.idx   = require('idx')
 
 
--- Ins submodules ---------------------
+--==============================================================================
+-- various Ins submodules
+--==============================================================================
+
 ---------------------------------------
+-- uncategorized
 
 Ins.subtype = require('ins_subtypes')
 --Ins.value_counter = require('value_counter')
 
+
+---------------------------------------
+-- Delays/Notes methods
 Ins.dm = require('DelaysMethods')
 Ins.dm.__index = Ins.dm
 -- Ins.nm = require('NotesMethods')
 -- Ins.nm.__index = Ins.nm
+
+
+---------------------------------------
+-- validation/checker functions
+Ins.is_valid_phrase_index 				= require("is_valid_phrase_index")
+Ins.check_amt_of_vals_in_phrases	= require("check_amt_of_vals_in_phrases")
+--Ins.get_phrase_strings 						= require("get_phrase_strings")
+
+
+---------------------------------------
+-- getters
+Ins.get = require('_get')
+Ins.get.__index = Ins.get
+
+
+---------------------------------------
+-- setters
+Ins.set = require('_set')
+Ins.set.__index = Ins.set
+
+
+---------------------------------------
+-- clipboard functions
+Ins.clipboard = require('_clipboard')
+Ins.clipboard.__index = Ins.clipboard
+
 
 
 --==============================================================================
@@ -232,40 +265,6 @@ Ins.print_info = function (self, options)
 	
 	print()
 end
-
-
---==============================================================================
--- validation/checker functions
---
--- These functions are used in get/set functions to make sure that
---		the 'group' construct is handled properly.
---==============================================================================
-
---Ins.get_phrase_strings 						= require("get_phrase_strings")
-Ins.is_valid_phrase_index 				= require("is_valid_phrase_index")
-Ins.check_amt_of_vals_in_phrases	= require("check_amt_of_vals_in_phrases")
-
-
---==============================================================================
--- getters
---==============================================================================
-Ins.get = require('_get')
-Ins.get.__index = Ins.get
-
-
---==============================================================================
--- setters
---==============================================================================
-Ins.set = require('_set')
-Ins.set.__index = Ins.set
-
-
---==============================================================================
--- clipboard functions
---==============================================================================
-Ins.clipboard = require('_clipboard')
-Ins.clipboard.__index = Ins.clipboard
-
 
 
 
