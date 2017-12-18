@@ -126,6 +126,7 @@ end -- new
 ---------------------------------------
 -- Ins.__newindex
 -- prevent creating keys in `Ins` class
+-- aka, shitty encapsulation
 Ins.__newindex = function(t,k,v)
 	error("=== Error : tried to add a key \""..tostring(k).."\" to the 'Ins' class.",3)
 end

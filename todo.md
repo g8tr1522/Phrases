@@ -79,5 +79,20 @@ the Phrases module?
 - The issue is that xStream only allows just *one* more require in main.lua.
 Any other requires produces strange errors. 
 
+-------------------------------------------------------------------------------
+## `utils`
+- As of now, utils is kind of a mixed bag of functions. 
+- I intend for it to be any functions which are used in the `Ins` class, but
+the user may have use for (outside of the `Ins` class).
 
+
+===============================================================================
+# How do I encapsulation
+- The `Ins` class has zero encapsulation.
+- I haven't bothered with encapsulation so far.
+- Things that should definitely be private and only object/class accessible:
+	- `o.count`
+		- The user modifies this by accessing the `o.vc` method
+		- `o.vc` in turn uses and modifies `o.count`.
+	- The `Ins` class should be fully protected 
 
