@@ -21,6 +21,10 @@ I put the sections in order of highest priority to lowest.
 - error messages in `Ins.set:delays` don't work as expected
 	- (when checking for `self.nopl` and `self.delays.top`)
 	- Test by setting one or the other, or none, and see if messages print out.
+- override `__tostring` metamethod for `Ins` objects.
+	- There could be a `Ins.name` property (set by the user)
+	- when `tostring()` is called, then return that name, else, the default 
+	'location name'
 
 
 -------------------------------------------------------------------------------
