@@ -49,5 +49,30 @@ I put the sections in order of highest priority to lowest.
 
 
 
+===============================================================================
+# Organizing this library
+
+
+-------------------------------------------------------------------------------
+## Library location in xStream
+- Ultimately, I want to have 'Phrases.lua' be in the same folder as 
+"com.renoise.xStream.xrnx/source/." and the "Phrases/Phrases/." source folder 
+inside that directory as well. 
+- I would like to have all the files in "Phrases/." (which aren't 'Phrases.lua')
+be unincluded. 
+- If I could specify (maybe in "xStream-fork-thing/.gitsubmodule") a way
+to 'un-include' these files, then I'd do that. AFAIK, there's no such way to do 
+such a thing.
+- For the time being, the Phrases submodule is kept in the root directory of 
+xStream. And AFAIK, it works the same both ways.
+
+-------------------------------------------------------------------------------
+## chance submodule
+- Is there a way to include it in xStream without making it a table entry in
+the Phrases module?
+- ie, it's its own separate submodule.
+- The issue is that xStream only allows just *one* more require in main.lua.
+Any other requires produces strange errors. 
+
 
 
