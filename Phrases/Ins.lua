@@ -72,7 +72,8 @@ tabler.idx   = require(_folder_tabler..'idx')
 -- uncategorized
 
 Ins.subtype = require(_sourceroot..'ins_subtypes')
---Ins.value_counter = require('value_counter')
+Ins.value_counter_closure = require(_folder_Ins..'value_counter_closure')
+
 
 
 ---------------------------------------
@@ -196,7 +197,8 @@ Ins.make_object = function (argt)
 	end
 	
 --value counter
-	o.vc = require(_folder_Ins..'value_counter')
+	--o.vc = require(_folder_Ins..'value_counter')
+	o.vc = Ins.value_counter_closure()
 	o.count = 1
 	
 --now, construct the members for the notes and phrases groups
