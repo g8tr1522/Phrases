@@ -51,7 +51,8 @@
 --]=]---[=[--
 
 unpack = unpack or table.unpack -- Renoise API uses unpack, not table.unpack
-range = loadfile('Phrases.tabler.range')
+--range = loadfile('Phrases.tabler.range')
+range = require(_folder_tabler..'range')
 
 
 shake = function (self, argt)
@@ -99,7 +100,8 @@ shake = function (self, argt)
 	
 	--shuffle Vsel
 	if argt.shuffle==true then
-		local chance = require('Chance.chance')
+		--local chance = require(_mainroot..'Chance/chance')
+		local chance = Phrases.chance
 		argt.Vsel = chance.helpers.shuffle(argt.Vsel)
 	end
 	

@@ -30,7 +30,8 @@
 --
 
 onvals = nil
-idx = require('phrases.tabler.idx')
+--idx = require('phrases.tabler.idx')
+idx = require(_folder_tabler..'idx')
 
 onvals = function (PG, Psel, Vsel, func)
 	if PG.PG then

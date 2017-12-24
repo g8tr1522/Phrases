@@ -68,7 +68,8 @@
 --			
 
 
-selpairs = require('Phrases.iters.selpairs')
+--selpairs = require('Phrases.iters.selpairs')
+selpairs = require(_folder_iters..'selpairs')
 unpack = unpack or table.unpack -- Renoise API uses unpack, not table.unpack
 
 
@@ -102,4 +103,4 @@ forgroup = function (group, Psel, Vsel, func)
 	return rg
 end
 
-return forvals
+return forgroup

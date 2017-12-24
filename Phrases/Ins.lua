@@ -71,7 +71,7 @@ tabler.idx   = require(_folder_tabler..'idx')
 ---------------------------------------
 -- uncategorized
 
-Ins.subtype = require(_sourceroot..'ins_subtypes')
+--Ins.subtype = require(_sourceroot..'ins_subtypes')
 Ins.value_counter_closure = require(_folder_Ins..'value_counter_closure')
 
 

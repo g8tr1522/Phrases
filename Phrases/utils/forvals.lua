@@ -14,7 +14,8 @@
 ----For Author: lines that are different from onvals are marked with "--!"
 --
 
-idx = require('Phrases.tabler.idx')
+--idx = require('Phrases.tabler.idx')
+idx = require(_folder_tabler..'idx')
 
 
 forvals = function (PG, Psel, Vsel, func)

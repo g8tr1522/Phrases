@@ -7,7 +7,8 @@
 --
 
 
-require('Phrases.iters.selpairs')
+--require('Phrases.iters.selpairs')
+require(_folder_iters..'selpairs')
 unpack = unpack or table.unpack -- Renoise API uses unpack, not table.unpack
 
 

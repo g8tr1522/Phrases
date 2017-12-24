@@ -1,5 +1,5 @@
 iters = {}
-_root = "Phrases.iters."
+_root = _folder_iters or "Phrases.iters."
 
 
 iters["allvals"] 	= require(_root..'allvals')

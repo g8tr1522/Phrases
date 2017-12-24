@@ -1,13 +1,14 @@
 utils = {}
-_root = "Phrases.utils."
+_root = _folder_utils or "Phrases.utils."
 
 
 
 utils["delays2pls"] = require(_root..'delays2pls')
 utils["delay2pl"] 	= require(_root..'delay2pl')
-utils["forvals"] 		= require(_root..'forvals')
+--utils["forvals"] 		= require(_root..'forvals')
 utils["forgroup"] 	= require(_root..'forgroup')
-utils["onvals"] 		= require(_root..'onvals')
+--utils["onvals"] 		= require(_root..'onvals')
+
 --right now, preloaded package is "phrases.utils"
 
 -- utils.iters = {}

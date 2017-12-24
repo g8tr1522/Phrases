@@ -6,7 +6,7 @@
 --
 
 clipboard = {}
-_root = "Phrases.Ins.clipboard."
+_root = (_folder_Ins..'clipboard/') or "Phrases.Ins.clipboard."
 
 
 clipboard.cut 		= require (_root.."cut")

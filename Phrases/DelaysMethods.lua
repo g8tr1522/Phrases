@@ -1,5 +1,5 @@
 DelaysMethods = {}
-_root = "Phrases.DelaysMethods."
+_root = _folder_DelaysMethods or "Phrases.DelaysMethods."
 
 
 --DelaysMethods["scoot"] = require(_root..'scoot')

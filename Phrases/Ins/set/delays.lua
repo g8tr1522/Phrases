@@ -6,7 +6,8 @@
 --	also sets `o.delays.pl`
 --
 
-require('Phrases.Ins.check_amt_of_vals_in_phrases')
+--require('Phrases.Ins.check_amt_of_vals_in_phrases')
+require(_folder_Ins..'check_amt_of_vals_in_phrases')
 
 
 delays = function (self, tn_delays_array)

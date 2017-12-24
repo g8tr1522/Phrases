@@ -6,7 +6,7 @@
 --
 
 set = {}
-_root = "Phrases.Ins.set."
+_root = (_folder_Ins..'set/') or "Phrases.Ins.set."
 
 
 set.notes 			= require (_root.."notes")
