@@ -5,7 +5,7 @@
 ----
 --
 
-require('idx')
+require(_folder_tabler..'idx')
 --require('Chance/chance')
 
 idx_shuffle = function (last)

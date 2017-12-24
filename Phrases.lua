@@ -1,37 +1,57 @@
 Phrases = {}
 
 
----- Deprecated require style which relies on main being in the level above this file.
 -------------------------------------------------------------------------------
--- __mainroot = 'Phrases.' --this is the location of the main file that requires this file
-
--- Phrases.Ins 		= require(__mainroot..'Ins')
--- Phrases.mDelays = require(__mainroot..'mDelays')
--- --Phrases.mNotes = require('Phrases.mNotes')
-
--- Phrases.utils 	= require(__mainroot..'utils')
--- Phrases.iters  = require('Phrases.iters')
-
--- Phrases.tabler 	= require(__mainroot..'tabler')
+-- stash globals which may already be declared
+local old_mainroot = _mainroot
+local old_sourceroot = _sourceroot
 
 
-
----- 'safer' require style, which assumes that main is where the `..` is in the below statement. (ie, in the assignment to package.path)
----- This style is appropriate if the Phrases submodule repo lies in the root directory of xStream.
 -------------------------------------------------------------------------------
-package.path = package.path .. ';./Phrases/?.lua'
+-- declare new globals for path names
 
-Phrases.Ins 		= require('Ins')
-Phrases.DelaysMethods = require('DelaysMethods')
+--package.path = package.path .. ';./Phrases/?.lua'
+
+_mainroot   = _phrasesroot or ''  -- path to where Phrases.lua is kept
+_sourceroot = _mainroot .. "Phrases/"
+
+
+-------------------------------------------------------------------------------
+-- require source files
+
+Phrases.chance	= require(_mainroot..'Chance/chance')
+
+_folder_iters                        = _sourceroot.."iters/"
+Phrases.iters                = require(_sourceroot..'iters')
+
+_folder_tabler                       = _sourceroot.."tabler/"
+Phrases.tabler 	             = require(_sourceroot..'tabler')
+
+_folder_utils                        = _sourceroot.."utils/"
+Phrases.utils 	             = require(_sourceroot..'utils')
+
+_folder_DelaysMethods                = _sourceroot.."DelaysMethods/"
+Phrases.DelaysMethods        = require(_sourceroot..'DelaysMethods')
+
 --Phrases.NotesMethods = require('NotesMethods')
 
-Phrases.utils 	= require('utils')
-Phrases.iters   = require('iters')
+-- Ins must be required last since it requires other modules
+_folder_Ins                          = _sourceroot.."Ins/"
+Phrases.Ins 		             = require(_sourceroot..'Ins')
 
-Phrases.tabler 	= require('tabler')
 
+-------------------------------------------------------------------------------
+-- Delete global path name variables
 
-Phrases.chance	= require('Chance/chance')
+_mainroot   = old_mainroot
+_sourceroot = old_sourceroot
+
+_folder_iters         = nil
+_folder_tabler        = nil
+_folder_utils         = nil
+_folder_DelaysMethods = nil
+_folder_Ins           = nil
+
 
 
 

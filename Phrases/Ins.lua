@@ -1,5 +1,8 @@
 Ins = {}
 
+print("main root     : ",_mainroot)
+print("source root   : ",_sourceroot)
+print("Ins folder    : ",_folder_Ins)
 
 -- printkeys = function (t, name)	--this is used only for debugging
 	-- name = name or '('..tostring(t)..')'
@@ -35,27 +38,30 @@ Ins = {}
 -- requires
 --==============================================================================
 
-_file = "?.lua"
-package.path = package.path 
-						.. ";./Phrases/" 				.._file
-            .. ";./Phrases/Ins/" 		.._file
-            .. ";./Phrases/iters/"  .._file
-						.. ";./Phrases/utils/" 	.._file
-						.. ";./Phrases/tabler/"	.._file
-						.. ";./Phrases/DelaysMethods/"	.._file
-						.. ";./Phrases/NotesMethods/"		.._file
+-- _file = "?.lua"
+-- package.path = package.path 
+						-- .. ";./Phrases/" 				.._file
+            -- .. ";./Phrases/Ins/" 		.._file
+            -- .. ";./Phrases/iters/"  .._file
+						-- .. ";./Phrases/utils/" 	.._file
+						-- .. ";./Phrases/tabler/"	.._file
+						-- .. ";./Phrases/DelaysMethods/"	.._file
+						-- .. ";./Phrases/NotesMethods/"		.._file
 --
+
+_folder_Ins = _folder_Ins 
+if not _folder_Ins then error("global path string '_folder_Ins' not visible!") end
 
 unpack = unpack or table.unpack -- Renoise API uses unpack, not table.unpack
 
 -- utility methods
 utils = {}
-utils.delays2pls = require('delays2pls')
-utils.forvals		 = require('forvals')
+utils.delays2pls = require(_folder_utils..'delays2pls')
+utils.forvals		 = require(_folder_utils..'forvals')
 
 --tabler methods
 tabler = {}
-tabler.idx   = require('idx')
+tabler.idx   = require(_folder_tabler..'idx')
 
 
 --==============================================================================
@@ -65,13 +71,13 @@ tabler.idx   = require('idx')
 ---------------------------------------
 -- uncategorized
 
-Ins.subtype = require('ins_subtypes')
+Ins.subtype = require(_sourceroot..'ins_subtypes')
 --Ins.value_counter = require('value_counter')
 
 
 ---------------------------------------
 -- Delays/Notes methods
-Ins.dm = require('DelaysMethods')
+Ins.dm = require(_sourceroot..'DelaysMethods')
 Ins.dm.__index = Ins.dm
 -- Ins.nm = require('NotesMethods')
 -- Ins.nm.__index = Ins.nm
@@ -79,26 +85,26 @@ Ins.dm.__index = Ins.dm
 
 ---------------------------------------
 -- validation/checker functions
-Ins.is_valid_phrase_index 				= require("is_valid_phrase_index")
-Ins.check_amt_of_vals_in_phrases	= require("check_amt_of_vals_in_phrases")
+Ins.is_valid_phrase_index 				= require(_folder_Ins.."is_valid_phrase_index")
+Ins.check_amt_of_vals_in_phrases	= require(_folder_Ins.."check_amt_of_vals_in_phrases")
 -- Ins.get_phrase_strings 						= require("get_phrase_strings")
 
 
 ---------------------------------------
 -- getters
-Ins.get = require('_get')
+Ins.get = require(_folder_Ins..'_get')
 Ins.get.__index = Ins.get
 
 
 ---------------------------------------
 -- setters
-Ins.set = require('_set')
+Ins.set = require(_folder_Ins..'_set')
 Ins.set.__index = Ins.set
 
 
 ---------------------------------------
 -- clipboard functions
-Ins.clipboard = require('_clipboard')
+Ins.clipboard = require(_folder_Ins..'_clipboard')
 Ins.clipboard.__index = Ins.clipboard
 
 
@@ -190,7 +196,7 @@ Ins.make_object = function (argt)
 	end
 	
 --value counter
-	o.vc = require('value_counter')
+	o.vc = require(_folder_Ins..'value_counter')
 	o.count = 1
 	
 --now, construct the members for the notes and phrases groups
