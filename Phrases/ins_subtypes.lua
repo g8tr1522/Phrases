@@ -2,7 +2,7 @@ ins_subtypes = {}
 
 --------------------------------------------------------------------------------
 -- instrument subtypes
-_ISpath = 'Phrases.ins_subtypes.'
+_ISpath = 'Phrases.ins_subtypes.'	--future: fix path to use global path strings
 
 ins_subtypes["test"] 						= require(_ISpath..'test')
 ins_subtypes["null"]						= require(_ISpath..'null')

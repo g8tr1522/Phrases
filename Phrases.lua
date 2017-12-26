@@ -1,12 +1,9 @@
 Phrases = {}
 
-print("phrases root is", _phrasesroot)
-print("main root is ",_mainroot)
-
 -------------------------------------------------------------------------------
 -- stash globals which may already be declared
---local old_mainroot = _mainroot
---local old_sourceroot = _sourceroot
+-- if _mainroot   then local old_mainroot   = _mainroot   end
+-- if _sourceroot~=nil then local old_sourceroot = _sourceroot end
 
 
 -------------------------------------------------------------------------------
@@ -15,8 +12,6 @@ print("main root is ",_mainroot)
 --package.path = package.path .. ';./Phrases/?.lua'
 
 _mainroot   = _phrasesroot or ''  -- path to where Phrases.lua is kept
-print("phrases root is", _phrasesroot)
-print("main root is ",_mainroot)
 _sourceroot = _mainroot .. "Phrases/"
 
 

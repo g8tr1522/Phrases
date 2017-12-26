@@ -1,9 +1,5 @@
 Ins = {}
 
-print("main root     : ",_mainroot)
-print("source root   : ",_sourceroot)
-print("Ins folder    : ",_folder_Ins)
-
 -- printkeys = function (t, name)	--this is used only for debugging
 	-- name = name or '('..tostring(t)..')'
 	-- print("\nPrinting keys for table '"..tostring(name).."'...")
@@ -13,41 +9,10 @@ print("Ins folder    : ",_folder_Ins)
 	-- print()
 -- end
 
---[==[
---pathdef setup
-
--- _fileroot = "Phrases."
--- _libroot = "Phrases.Ins."
-
--- _repopath    = "Phrases/"										--folder of this repo
--- _fileroot    =          "Phrases/"					--folder this file is contained in
--- _filelibpath =                   "Ins/"			--this file is a module. Its submodules/files are kept in this folder. (ie, the 'Ins' folder)
--- _utilspath   =                   "utils/"		--this file also uses some functions in here.
--- _tablerpath  =                   "tabler/"	--this file also uses some functions in here.
-
-
--- _sch_file   = ";".._repopath.._fileroot.._filelibpath.."?.lua"		--searcher for files in 'Ins' folder
--- _sch_utils  = ";".._repopath.._fileroot.._utilspath  .."?.lua"		--searcher for files in 'utils' folders
--- _sch_tabler = ";".._repopath.._fileroot.._tablerpath .."?.lua"		--searcher for files in 'tabler' folders
-
--- package.path = package.path --_sch_file .. _sch_utils
---]==]
-
 
 --==============================================================================
 -- requires
 --==============================================================================
-
--- _file = "?.lua"
--- package.path = package.path 
-						-- .. ";./Phrases/" 				.._file
-            -- .. ";./Phrases/Ins/" 		.._file
-            -- .. ";./Phrases/iters/"  .._file
-						-- .. ";./Phrases/utils/" 	.._file
-						-- .. ";./Phrases/tabler/"	.._file
-						-- .. ";./Phrases/DelaysMethods/"	.._file
-						-- .. ";./Phrases/NotesMethods/"		.._file
---
 
 _folder_Ins = _folder_Ins 
 if not _folder_Ins then error("global path string '_folder_Ins' not visible!") end
@@ -156,11 +121,6 @@ Ins.make_object = function (argt)
 	
 	-- number of notes phrases:
 	argt.nonp = argt.nonp or argt.nnp or argt.np or argt.nn or argt.nP or 1
-	-- if (argt.nonp or argt.nnp or argt.np or argt.nn) then	
-		-- argt.nonp = (argt.nonp or argt.nnp or argt.np or argt.nn)
-	-- else
-		-- argt.nonp = 1
-	-- end
 	
 	-- number of pattern lines:
 	if argt.nopl then
