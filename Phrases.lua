@@ -23,13 +23,16 @@ _sourceroot = _mainroot .. "Phrases/"
 
 Phrases.chance	= require(_mainroot..'Chance/chance')
 
-local _lamroot = _mainroot .. "LuaArrayMethods/" 
+-- LuaArrayMethods module
+_lamroot = _mainroot .. "LuaArrayMethods/" 
+lam = {}
 if userlib then  -- don't reload lam if we're using xStream
 	lam = userlib.LuaArrayMethods
 	_lamroot = nil
 else
 	lam = require(_lamroot..'lam')
 end
+
 
 _folder_iters                        = _sourceroot.."iters/"
 Phrases.iters                = require(_sourceroot..'iters')
