@@ -51,8 +51,12 @@
 --]=]---[=[--
 
 unpack = unpack or table.unpack -- Renoise API uses unpack, not table.unpack
+local idx          = lam.make.idx
+local idx_shuffled = lam.make.idx_shuffled
 --range = loadfile('Phrases.tabler.range')
-range = require(_folder_tabler..'range')
+-- range = require(_folder_tabler..'range')
+local range   = lam.make.range
+local shuffle = lam.basic.shuffle
 
 
 shake = function (self, argt)
@@ -75,7 +79,8 @@ shake = function (self, argt)
 	--Vsel 
 	if type(argt.Vsel)=="number" then
 		local number = argt.Vsel
-		argt.Vsel = Phrases.tabler.idx_shuffled(#temp)
+		--argt.Vsel = Phrases.tabler.idx_shuffled(#temp)
+		argt.Vsel = idx_shuffled(#temp)
 		if number <= #temp then
 			for i=1,(#temp-number) do
 				argt.Vsel[#argt.Vsel] = nil
@@ -88,7 +93,8 @@ shake = function (self, argt)
 					.."  = These numbers will correspond to the indices to operate over.", 2)
 		end
 	elseif argt.Vsel=="all" then
-			argt.Vsel = Phrases.tabler.idx( #temp )
+			--argt.Vsel = Phrases.tabler.idx( #temp )
+			argt.Vsel = idx( #temp )
 		--end
 	else
 		error("=== Error in DelaysMethods.shake"
@@ -101,8 +107,9 @@ shake = function (self, argt)
 	--shuffle Vsel
 	if argt.shuffle==true then
 		--local chance = require(_mainroot..'Chance/chance')
-		local chance = Phrases.chance
-		argt.Vsel = chance.helpers.shuffle(argt.Vsel)
+		--local chance = Phrases.chance
+		--argt.Vsel = chance.helpers.shuffle(argt.Vsel)
+		argt.Vset = shuffle(argt.Vsel)
 	end
 	
 	
