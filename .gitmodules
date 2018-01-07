@@ -4,3 +4,6 @@
 	
 	url = https://github.com/ejmr/chance.lua
 
+[submodule "LuaArrayMethods"]
+	path = LuaArrayMethods
+	url = https://github.com/g8tr1522/LuaArrayMethods
