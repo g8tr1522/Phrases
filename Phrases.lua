@@ -21,7 +21,7 @@ _sourceroot = _mainroot .. "Phrases/"
 -------------------------------------------------------------------------------
 -- require source files
 
-Phrases.chance	= require(_mainroot..'Chance/chance')
+--Phrases.chance	= require(_mainroot..'Chance/chance')
 
 -- LuaArrayMethods module
 _lamroot = _mainroot .. "LuaArrayMethods/" 

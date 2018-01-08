@@ -102,9 +102,6 @@ shake = function (self, argt)
 	
 	--shuffle Vsel
 	if argt.shuffle==true then
-		--local chance = require(_mainroot..'Chance/chance')
-		--local chance = Phrases.chance
-		--argt.Vsel = chance.helpers.shuffle(argt.Vsel)
 		argt.Vset = shuffle(argt.Vsel)
 	end
 	

@@ -1,6 +1,6 @@
 -- This is just used to test out new code. This file isn't required.
 print()
-chance	= require('Chance/chance')
+--chance	= require('Chance/chance')
 Phrases = require('Phrases')
 
 obj = Phrases.Ins:new{subtype="mp_lead", top=5, nopl=64, nonp=3}
