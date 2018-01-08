@@ -120,11 +120,20 @@ Ins.make_object = function (argt)
 	argt.nonp = argt.nonp or argt.nnp or argt.np or argt.nn or argt.nP or 1
 	
 	-- number of pattern lines:
+	local nopl_at_pattern_1 = 0
+	if renoise then nopl_at_pattern_1 = renoise.song().patterns[1].number_of_lines or 0 end
+	
 	if argt.nopl then
 		o.nopl = argt.nopl
 	else 
-		o.nopl = 0
-		print("=== Don't forget to set `object.nopl`!") 
+		if nopl_at_pattern_1~=0 then
+			o.nopl = nopl_at_pattern_1
+			print("=== `nopl` for Ins object "..tostring(o).." was automatically set to ", nopl_at_pattern_1)
+		else 
+			o.nopl = 0
+			print("=== `renoise.song()` is not visible.")
+			print("  = `object.nopl` must be set manually!")
+		end
 	end
 	
 	-- delays.tn upper bound
