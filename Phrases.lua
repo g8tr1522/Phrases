@@ -37,9 +37,6 @@ end
 _folder_iters                        = _sourceroot.."iters/"
 Phrases.iters                = require(_sourceroot..'iters')
 
-_folder_tabler                       = _sourceroot.."tabler/"
-Phrases.tabler 	             = require(_sourceroot..'tabler')
-
 _folder_utils                        = _sourceroot.."utils/"
 Phrases.utils 	             = require(_sourceroot..'utils')
 

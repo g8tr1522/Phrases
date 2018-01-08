@@ -29,7 +29,7 @@ I put the sections in order of highest priority to lowest.
 
 -------------------------------------------------------------------------------
 ## Bad patches
-- what the hell is going on in tabler.range.lua? 
+- what the hell is going on with the range creator in lam.make.range? (see file range.lua) 
 	- See comments about FP_ERROR
 	- May want to look at commit 'de8152a'
 
