@@ -21,8 +21,6 @@ _sourceroot = _mainroot .. "Phrases/"
 -------------------------------------------------------------------------------
 -- require source files
 
---Phrases.chance	= require(_mainroot..'Chance/chance')
-
 -- LuaArrayMethods module
 _lamroot = _mainroot .. "LuaArrayMethods/" 
 lam = {}
@@ -59,7 +57,6 @@ _mainroot = nil
 _sourceroot = nil
 
 _folder_iters         = nil
-_folder_tabler        = nil
 _folder_utils         = nil
 _folder_DelaysMethods = nil
 _folder_Ins           = nil
