@@ -15,7 +15,8 @@
 --
 
 --idx = require('Phrases.tabler.idx')
-idx = require(_folder_tabler..'idx')
+--idx = require(_folder_tabler..'idx')
+idx = lam.make.idx
 
 
 forvals = function (PG, Psel, Vsel, func)

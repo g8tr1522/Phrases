@@ -25,8 +25,8 @@ utils.delays2pls = require(_folder_utils..'delays2pls')
 utils.forvals		 = require(_folder_utils..'forvals')
 
 --tabler methods
-tabler = {}
-tabler.idx   = require(_folder_tabler..'idx')
+--tabler = {}
+--tabler.idx   = require(_folder_tabler..'idx')
 
 
 --==============================================================================

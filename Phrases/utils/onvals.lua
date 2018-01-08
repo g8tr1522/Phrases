@@ -31,7 +31,8 @@
 
 onvals = nil
 --idx = require('phrases.tabler.idx')
-idx = require(_folder_tabler..'idx')
+--idx = require(_folder_tabler..'idx')
+idx = lam.make.idx
 
 onvals = function (PG, Psel, Vsel, func)
 	if PG.PG then
