@@ -29,9 +29,8 @@
 --		This applies func to the values specified in Vsel, and to all phrases.
 --
 
+
 onvals = nil
---idx = require('phrases.tabler.idx')
---idx = require(_folder_tabler..'idx')
 idx = lam.make.idx
 
 onvals = function (PG, Psel, Vsel, func)

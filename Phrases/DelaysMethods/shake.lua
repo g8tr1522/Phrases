@@ -53,8 +53,6 @@
 unpack = unpack or table.unpack -- Renoise API uses unpack, not table.unpack
 local idx          = lam.make.idx
 local idx_shuffled = lam.make.idx_shuffled
---range = loadfile('Phrases.tabler.range')
--- range = require(_folder_tabler..'range')
 local range   = lam.make.range
 local shuffle = lam.basic.shuffle
 
@@ -79,7 +77,6 @@ shake = function (self, argt)
 	--Vsel 
 	if type(argt.Vsel)=="number" then
 		local number = argt.Vsel
-		--argt.Vsel = Phrases.tabler.idx_shuffled(#temp)
 		argt.Vsel = idx_shuffled(#temp)
 		if number <= #temp then
 			for i=1,(#temp-number) do
@@ -93,7 +90,6 @@ shake = function (self, argt)
 					.."  = These numbers will correspond to the indices to operate over.", 2)
 		end
 	elseif argt.Vsel=="all" then
-			--argt.Vsel = Phrases.tabler.idx( #temp )
 			argt.Vsel = idx( #temp )
 		--end
 	else
