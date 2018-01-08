@@ -12,19 +12,13 @@
 --
 
 delays2pls = function (tn_delays, delays_UB, nopl)
-	--any print functions here are for debugging
-	-- print("--- calling delays2pls")
-	-- print("  - tn_delays is ",table.unpack(tn_delays) )
-	-- print("  - delays_UB is ",delays_UB)
-	-- print("  - nopl      is ",nopl)
+	local pl_delays = {}
 	
 	for i,v in ipairs(tn_delays) do
-		tn_delays[i] = (v-1)/(delays_UB - 1) *nopl
+		pl_delays[i] = (v-1)/(delays_UB - 1) *nopl
 	end
 	
-	-- print("  - tn_delays is ",table.unpack(tn_delays) )
-	-- print()
-	return tn_delays
+	return pl_delays
 end
 
 return delays2pls
