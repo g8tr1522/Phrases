@@ -122,7 +122,6 @@ Ins.make_object = function (argt)
 	-- number of pattern lines:
 	local nopl_at_pattern_1 = 0
 	if renoise then nopl_at_pattern_1 = renoise.song().patterns[1].number_of_lines or 0 end
-	
 	if argt.nopl then
 		o.nopl = argt.nopl
 	else 
@@ -143,6 +142,18 @@ Ins.make_object = function (argt)
 	else
 		o.delays.top = 0
 		print("=== Don't forget to set `object.delays.top`!") 
+	end
+	
+	-- instrument number (used for `Ins.get:note_column_table`)
+	argt.instrument_value = argt.instrument or argt.instrument_number or argt.instrument_number or argt.instrument_value or argt.inst or argt.inst_num or argt.inst_val or argt.inst_value
+	if argt.instrument_value then
+		if type(argt.instrument_value)=="string" then
+			argt.instrument_value = tonumber(argt.instrument_value)
+		end
+		o.instrument_value = argt.instrument_value
+	else
+		o.instrument_value = 0
+		print("=== WARNING : Instrument value was automatically set to 0! Set with `Ins.set:instrument_value`")
 	end
 	
 	print()
