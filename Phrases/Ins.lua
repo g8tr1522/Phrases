@@ -144,7 +144,7 @@ Ins.make_object = function (argt)
 		print("=== Don't forget to set `object.delays.top`!") 
 	end
 	
-	-- instrument number (used for `Ins.get:note_column_table`)
+	-- instrument number (used for `Ins.get:xline_note_column_table`)
 	argt.instrument_value = argt.instrument or argt.instrument_number or argt.instrument_number or argt.instrument_value or argt.inst or argt.inst_num or argt.inst_val or argt.inst_value
 	if argt.instrument_value then
 		if type(argt.instrument_value)=="string" then
@@ -155,6 +155,21 @@ Ins.make_object = function (argt)
 		o.instrument_value = 0
 		print("=== WARNING : Instrument value was automatically set to 0! Set with `Ins.set:instrument_value`")
 	end
+	
+	-- default volume value (used for `Ins.get:xline_note_column_table`)
+	argt.dvv = argt.vol_value or argt.volume_value or argt.volume or argt.vol or argt.default_volume or argt.dv or argt.vv or argt.default_vol or argt.default_volume_value
+	if argt.dvv then
+		if type(argt.dvv)=="number" then
+			if argt.dvv<0 then
+				argt.dvv = 0
+			elseif argt.dvv>127 then
+				argt.dvv = 127
+			end
+		end
+	else
+		print("=== Default volume value was set to 0x40 (0d64)")
+	end
+	o.default_volume_value = argt.dvv or 64
 	
 	print()
 	
